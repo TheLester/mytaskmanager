@@ -58,7 +58,7 @@ public class MainActivity extends ListActivity {
 				.getProcessMemoryInfo(new int[] { procID })[0];
 		StringBuffer procMemoryInfo = new StringBuffer();
 
-		procMemoryInfo.append("-------------------------------------");
+		procMemoryInfo.append("-------------------------------------\n");
 		procMemoryInfo.append("Process memory information(in kB):\n");
 		procMemoryInfo.append("Private dirty pages:");
 		procMemoryInfo.append(info.getTotalPrivateDirty());
@@ -147,9 +147,11 @@ public class MainActivity extends ListActivity {
 				.setTitle("Task Manager")
 				.setMessage(
 						Html.fromHtml("TaskManager.Developed by:"
-								+ " <i>Dmitri Dogar (AE-101)</i>. "
+								+ " <i>Dmitri Dogar</i>. "
 								+ "<br><b><u>Contact Information:</u></b>"
-								+ "<br><a href=\"mailto:dimsdevelop@gmail.com\">Author's Em@il</a>"))
+								+ "<br><a href=\"mailto:dimsdevelop@gmail.com\">Author's Em@il</a>"
+								+ "<br><br>Open source at<br><a href=\"https://github.com/TheLester\">GitHub Page</a>"
+								+ "<br><br>P.S.: Thanks Derek Banas for his tutorials:)"))
 				.setPositiveButton("Back",
 						new DialogInterface.OnClickListener() {
 							@Override
