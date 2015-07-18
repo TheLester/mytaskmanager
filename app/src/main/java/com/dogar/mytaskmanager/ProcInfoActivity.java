@@ -1,4 +1,4 @@
-package com.example.mytaskmanager;
+package com.dogar.mytaskmanager;
 
 import android.net.Uri;
 import android.os.Bundle;

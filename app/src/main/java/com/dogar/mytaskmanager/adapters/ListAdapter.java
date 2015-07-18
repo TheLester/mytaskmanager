@@ -1,4 +1,4 @@
-package com.example.mytaskmanager.adapters;
+package com.dogar.mytaskmanager.adapters;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
-import com.example.mytaskmanager.R;
+import com.dogar.mytaskmanager.R;
 
 public class ListAdapter extends ArrayAdapter<RunningAppProcessInfo> {
 
