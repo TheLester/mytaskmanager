@@ -25,8 +25,12 @@ proguard/
 #Log Files
 *.log
 
+#iml files
+*.iml
+
 .idea/
 .gitignore~
 gradle/
 gradlew
 mytaskmanager.iml
+
