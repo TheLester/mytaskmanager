@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.dogar.mytaskmanager.R;
-import com.dogar.mytaskmanager.model.TaskInfo;
+import com.dogar.mytaskmanager.model.AppInfo;
 import com.facebook.drawee.view.SimpleDraweeView;
 
 import butterknife.Bind;
@@ -18,10 +18,10 @@ import butterknife.ButterKnife;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
-	private Context        context;
-	private List<TaskInfo> tasks;
+	private Context       context;
+	private List<AppInfo> tasks;
 
-	public TasksAdapter(Context context, List<TaskInfo> tasks) {
+	public TasksAdapter(Context context, List<AppInfo> tasks) {
 		this.context = context;
 		this.tasks = tasks;
 	}
@@ -37,9 +37,9 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
 	@Override
 	public void onBindViewHolder(TaskVH holder, int position) {
-		TaskInfo taskInfo = tasks.get(position);
-		holder.processInfo.setText(taskInfo.getTaskName());
-	//	holder.processIcon.setImageURI(taskInfo.getIconURI());
+		AppInfo appInfo = tasks.get(position);
+		holder.processInfo.setText(appInfo.getTaskName());
+		//	holder.processIcon.setImageURI(taskInfo.getIconURI());
 
 	}
 

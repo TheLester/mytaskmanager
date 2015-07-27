@@ -6,7 +6,7 @@ import android.net.Uri;
 import lombok.Data;
 
 @Data
-public class TaskInfo {
+public class AppInfo {
 	private Uri iconURI;
 	private String taskName;
 }
