@@ -5,10 +5,9 @@
           android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="9"
-        android:targetSdkVersion="14"/>
+        android:minSdkVersion="15"
+        android:targetSdkVersion="21"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
-    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:name="com.dogar.mytaskmanager.App"

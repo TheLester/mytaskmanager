@@ -11,14 +11,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
 
-        <com.facebook.drawee.view.SimpleDraweeView
+        <ImageView
             android:id="@+id/process_icon"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_alignParentLeft="true"
-            custom:placeholderImage="@color/blue"
-            custom:roundingBorderColor="@color/darkgreen"
-            custom:roundingBorderWidth="2dp"/>
+            android:layout_alignParentLeft="true"/>
 
         <TextView
             android:id="@+id/process_info_text"
