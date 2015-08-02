@@ -1,0 +1,77 @@
+<android.support.v7.widget.CardView
+    android:id="@+id/card_view"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/app_card_height"
+    android:layout_gravity="center"
+    android:layout_margin="@dimen/size_normal"
+    custom:cardCornerRadius="4dp"
+    custom:cardElevation="@dimen/size_micro"
+    custom:contentPadding="@dimen/size_normal">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/process_icon"
+            android:layout_width="@dimen/app_card_icon_size"
+            android:layout_height="@dimen/app_card_icon_size"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_margin="@dimen/size_normal"/>
+
+        <TextView
+            android:id="@+id/app_info_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:gravity="center_horizontal"
+            android:layout_toLeftOf="@id/process_icon"
+            android:padding="@dimen/size_normal"
+            android:singleLine="true"
+            android:textColor="@color/darkgray"
+            android:textSize="@dimen/text_size_big"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/app_info_memory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/app_info_name"
+
+            android:layout_alignStart="@id/app_info_name"
+            android:layout_below="@id/app_info_name"
+            android:singleLine="true"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="italic"
+            />
+
+        <TextView
+            android:id="@+id/app_info_separator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/app_info_memory"
+            android:singleLine="true"
+            android:text=" | "
+            android:textColor="@color/darkgray"
+            android:layout_alignBottom="@id/app_info_memory"
+            android:textSize="@dimen/text_size_normal"
+            android:textStyle="bold"
+            />
+
+        <TextView
+            android:id="@+id/app_info_cpu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/app_info_separator"
+            android:singleLine="true"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_normal"
+            android:layout_alignBottom="@id/app_info_memory"
+            android:textStyle="italic"
+            />
+    </RelativeLayout>
+</android.support.v7.widget.CardView>

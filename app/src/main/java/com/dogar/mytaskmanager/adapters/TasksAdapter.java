@@ -10,12 +10,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.model.AppInfo;
+import com.dogar.mytaskmanager.utils.MemoryUtil;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
 	private Context       context;
@@ -32,7 +33,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	@Override
 	public TaskVH onCreateViewHolder(ViewGroup parent, int viewType) {
 		View v = LayoutInflater.from(parent.getContext())
-				.inflate(R.layout.process_card, parent, false);
+				.inflate(R.layout.item_app_card, parent, false);
 
 		TaskVH vh = new TaskVH(v);
 		return vh;
@@ -41,8 +42,16 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	@Override
 	public void onBindViewHolder(TaskVH holder, int position) {
 		AppInfo appInfo = tasks.get(position);
-		holder.processInfo.setText(appInfo.getTaskName());
-		//	holder.processIcon.setImageURI(taskInfo.getIconURI());
+		holder.appInfo.setText(appInfo.getTaskName());
+		holder.appMemoryInfo.setText(""+MemoryUtil.getProcessRamInMb(appInfo.getPid()));
+		holder.appCpuInfo.setText("dsaas");
+
+		Glide.with(context)
+				.load(appInfo.getIcon())
+				.centerCrop()
+				.crossFade()
+				.into(holder.appIcon);
+
 
 	}
 
@@ -52,8 +61,10 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	}
 
 	static class TaskVH extends RecyclerView.ViewHolder {
-		@Bind(R.id.process_icon)      ImageView processIcon;
-		@Bind(R.id.process_info_text) TextView  processInfo;
+		@Bind(R.id.process_icon)    ImageView appIcon;
+		@Bind(R.id.app_info_name)   TextView  appInfo;
+		@Bind(R.id.app_info_memory) TextView  appMemoryInfo;
+		@Bind(R.id.app_info_cpu)    TextView  appCpuInfo;
 
 		public TaskVH(View itemView) {
 			super(itemView);

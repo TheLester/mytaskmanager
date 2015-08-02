@@ -8,6 +8,7 @@
         android:minSdkVersion="15"
         android:targetSdkVersion="21"/>
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <application
         android:name="com.dogar.mytaskmanager.App"

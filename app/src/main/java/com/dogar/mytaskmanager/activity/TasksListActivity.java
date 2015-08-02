@@ -7,17 +7,22 @@ import com.dogar.mytaskmanager.App;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.model.AppInfo;
+import com.dogar.mytaskmanager.utils.ToastUtils;
 import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
+import android.content.pm.ApplicationInfo;
 import android.content.pm.ComponentInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
 import android.app.ActivityManager.RunningAppProcessInfo;
 import android.content.Intent;
+import android.support.annotation.MainThread;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -29,7 +34,10 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 import rx.Observable;
 import rx.Observer;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 import timber.log.Timber;
 
 
@@ -45,6 +53,7 @@ public class TasksListActivity extends BaseActivity implements CircleRefreshLayo
 	private List<String>  installedAppsPackages = new ArrayList<>();
 	private List<AppInfo> appInfos              = new ArrayList<>();
 
+	private boolean isRefreshing;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +68,7 @@ public class TasksListActivity extends BaseActivity implements CircleRefreshLayo
 		processList.setLayoutManager(new LinearLayoutManager(this));
 		processList.setAdapter(myTasksAdapter);
 
-		getRunningApps().subscribe(observer);
+		getRunningApps().subscribe(new AppsObserver());
 
 		updateAvailableMemory();
 	}
@@ -76,28 +85,63 @@ public class TasksListActivity extends BaseActivity implements CircleRefreshLayo
 	}
 
 	private Observable<AppInfo> getRunningApps() {
-		return Observable.from(activityManager.getRunningAppProcesses()).
-				filter(new Func1<RunningAppProcessInfo, Boolean>() {
-					@Override
-					public Boolean call(RunningAppProcessInfo runningAppProcessInfo) {
-						return installedAppsPackages.contains(runningAppProcessInfo.processName);
-					}
-				})
-				.map(new Func1<RunningAppProcessInfo, AppInfo>() {
-					@Override
-					public AppInfo call(RunningAppProcessInfo runningAppProcessInfo) {
-						AppInfo appInfo = new AppInfo();
-						appInfo.setTaskName(runningAppProcessInfo.processName);
-						return appInfo;
-					}
-				});
+		return Observable.defer(new Func0<Observable<AppInfo>>() {
+			@Override
+			public Observable<AppInfo> call() {
+				return getRunningAppsObservable();
+			}
+
+			@NonNull
+			private Observable<AppInfo> getRunningAppsObservable() {
+				return Observable.from(activityManager.getRunningAppProcesses()).
+						filter(new Func1<RunningAppProcessInfo, Boolean>() {
+							@Override
+							public Boolean call(RunningAppProcessInfo runningAppProcessInfo) {
+								return installedAppsPackages.contains(runningAppProcessInfo.processName);
+							}
+						})
+						.map(new Func1<RunningAppProcessInfo, AppInfo>() {
+							@Override
+							public AppInfo call(RunningAppProcessInfo runningAppProcessInfo) {
+								ApplicationInfo androidAppInfo = null;
+								AppInfo appInfo = new AppInfo();
+								try {
+									androidAppInfo = packageManager.getApplicationInfo(runningAppProcessInfo.processName, PackageManager.GET_META_DATA);
+									appInfo.setPid(runningAppProcessInfo.pid);
+								} catch (PackageManager.NameNotFoundException e) {
+									e.printStackTrace();
+								}
+
+								if (androidAppInfo != null) {
+									appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
+									appInfo.setIcon(getIconUri(androidAppInfo));
+								}
+								return appInfo;
+							}
+						});
+			}
+		}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 	}
 
-	private Observer<AppInfo> observer = new Observer<AppInfo>() {
+	private Uri getIconUri(ApplicationInfo applicationInfo) {
+		Uri iconUri = null;
+		if (applicationInfo.icon != 0) {
+			iconUri = Uri.parse(new StringBuffer().append("android.resource://").append(applicationInfo.packageName).
+					append("/").append(applicationInfo.icon).toString());
+		}
+		return iconUri;
+	}
+
+	private class AppsObserver implements Observer<AppInfo> {
 
 		@Override
 		public void onCompleted() {
-			myTasksAdapter.notifyDataSetChanged();
+			if (!appInfos.isEmpty() && isRefreshing) {
+				finishRefreshingWithDelay();
+			} else {
+				myTasksAdapter.notifyDataSetChanged();
+			}
+
 			Timber.i("Done!");
 		}
 
@@ -110,7 +154,16 @@ public class TasksListActivity extends BaseActivity implements CircleRefreshLayo
 		public void onNext(AppInfo appInfo) {
 			appInfos.add(appInfo);
 		}
-	};
+	}
+
+	private void finishRefreshingWithDelay() {
+		refreshLayout.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				refreshLayout.finishRefreshing();
+			}
+		}, 2000);
+	}
 
 	private void updateAvailableMemory() {
 		MemoryInfo mi = new MemoryInfo();
@@ -151,11 +204,17 @@ public class TasksListActivity extends BaseActivity implements CircleRefreshLayo
 
 	@Override
 	public void completeRefresh() {
+		isRefreshing = false;
+		myTasksAdapter.notifyDataSetChanged();
 		Timber.i("Complete refresh!");
 	}
 
 	@Override
 	public void refreshing() {
 		Timber.i("Refreshing ...");
+		isRefreshing = true;
+		appInfos.clear();
+		getRunningApps().subscribe(new AppsObserver());
+
 	}
 }

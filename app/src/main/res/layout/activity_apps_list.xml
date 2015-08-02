@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:AniBackColor="@color/darkgray"
-    app:AniForeColor="@color/green"
+    app:AniForeColor="@color/white"
     app:CircleSmaller="6">
 
     <android.support.v7.widget.RecyclerView
