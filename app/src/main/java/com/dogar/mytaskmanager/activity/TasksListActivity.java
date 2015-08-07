@@ -1,15 +1,9 @@
 package com.dogar.mytaskmanager.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import com.dogar.mytaskmanager.App;
-import com.dogar.mytaskmanager.R;
-import com.dogar.mytaskmanager.adapters.TasksAdapter;
-import com.dogar.mytaskmanager.model.AppInfo;
-import com.dogar.mytaskmanager.utils.ToastUtils;
-import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
-
+import android.app.ActivityManager;
+import android.app.ActivityManager.MemoryInfo;
+import android.app.ActivityManager.RunningAppProcessInfo;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ComponentInfo;
 import android.content.pm.PackageManager;
@@ -17,16 +11,20 @@ import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Debug;
-import android.app.ActivityManager;
-import android.app.ActivityManager.MemoryInfo;
-import android.app.ActivityManager.RunningAppProcessInfo;
-import android.content.Intent;
-import android.support.annotation.MainThread;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuInflater;
+
+import com.dogar.mytaskmanager.App;
+import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.adapters.TasksAdapter;
+import com.dogar.mytaskmanager.model.AppInfo;
+import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.inject.Inject;
 
