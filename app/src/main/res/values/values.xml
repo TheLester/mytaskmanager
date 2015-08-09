@@ -1,0 +1,3 @@
+<resources>
+    <integer name="fragment_animation_duration">250</integer>
+</resources>

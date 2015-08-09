@@ -1,20 +1,9 @@
 package com.dogar.mytaskmanager;
 
-import android.net.Uri;
 import android.os.Bundle;
 import android.app.Activity;
-import android.app.ActivityManager;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.support.v4.app.NavUtils;
-import android.content.Intent;
-import android.content.pm.PackageManager.NameNotFoundException;
-
-import com.dogar.mytaskmanager.activity.TasksListActivity;
 
 public class ProcInfoActivity extends Activity {
 	private  String packageName;

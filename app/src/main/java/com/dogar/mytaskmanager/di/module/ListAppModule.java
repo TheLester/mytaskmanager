@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 
 import com.dogar.mytaskmanager.App;
-import com.dogar.mytaskmanager.activity.TasksListActivity;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 
 import javax.inject.Singleton;

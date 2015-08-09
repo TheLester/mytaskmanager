@@ -34,3 +34,5 @@ gradle/
 gradlew
 mytaskmanager.iml
 
+
+app/fabric.properties
