@@ -14,6 +14,7 @@ import android.support.annotation.NonNull;
 import com.dogar.mytaskmanager.App;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
+import com.dogar.mytaskmanager.utils.MemoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -150,6 +151,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		if (androidAppInfo != null) {
 			appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
 			appInfo.setIcon(getIconUri(androidAppInfo));
+			appInfo.setMemoryInfo(MemoryUtil.formatMemSize(activityManager.getProcessMemoryInfo(new int[]{pid})[0].getTotalPss()));
 		}
 		return appInfo;
 	}

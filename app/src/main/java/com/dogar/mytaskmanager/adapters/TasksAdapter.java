@@ -43,7 +43,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	public void onBindViewHolder(TaskVH holder, int position) {
 		AppInfo appInfo = tasks.get(position);
 		holder.appInfo.setText(appInfo.getTaskName());
-	//	holder.appMemoryInfo.setText("" + MemoryUtil.getProcessRamInMb(appInfo.getPid()));
+		holder.appMemoryInfo.setText(appInfo.getMemoryInfo());
 		holder.appCpuInfo.setText("dsaas");
 
 		Glide.with(context)
