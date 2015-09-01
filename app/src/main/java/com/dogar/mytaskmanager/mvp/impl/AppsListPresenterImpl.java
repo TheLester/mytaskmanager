@@ -8,10 +8,10 @@ import android.content.pm.ComponentInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.dogar.mytaskmanager.App;
-import com.dogar.mytaskmanager.di.module.ListAppModule;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 
@@ -38,21 +38,28 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 	public AppsListPresenterImpl(View mView) {
 		this.mView = mView;
-		initInstalledApps();
 		App.getInstance().component().inject(this);
+		initInstalledApps();
 	}
-
 
 
 	@Override
 	public void loadAppList() {
-		getNewRunningAppsObservable().subscribe(new AppsObserver());
+		loadAppsInfos();
 	}
 
 	@Override
 	public void reloadAppList() {
 		appInfos.clear();
-		getNewRunningAppsObservable().subscribe(new AppsObserver());
+		loadAppsInfos();
+	}
+
+	private void loadAppsInfos() {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+			getNewRunningServicesObservable().subscribe(new AppsObserver());
+		} else {
+			getNewRunningAppsObservable().subscribe(new AppsObserver());
+		}
 	}
 
 	@Override
@@ -69,6 +76,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 	public void onStop() {
 
 	}
+
 
 	private Observable<AppInfo> getNewRunningAppsObservable() {
 		return Observable.defer(new Func0<Observable<AppInfo>>() {
@@ -89,24 +97,61 @@ public class AppsListPresenterImpl implements AppListPresenter {
 						.map(new Func1<ActivityManager.RunningAppProcessInfo, AppInfo>() {
 							@Override
 							public AppInfo call(ActivityManager.RunningAppProcessInfo runningAppProcessInfo) {
-								ApplicationInfo androidAppInfo = null;
-								AppInfo appInfo = new AppInfo();
-								try {
-									androidAppInfo = packageManager.getApplicationInfo(runningAppProcessInfo.processName, PackageManager.GET_META_DATA);
-									appInfo.setPid(runningAppProcessInfo.pid);
-								} catch (PackageManager.NameNotFoundException e) {
-									e.printStackTrace();
-								}
-
-								if (androidAppInfo != null) {
-									appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
-									appInfo.setIcon(getIconUri(androidAppInfo));
-								}
-								return appInfo;
+								return buildAppInfo(runningAppProcessInfo.processName, runningAppProcessInfo.pid);
 							}
 						});
 			}
 		}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+	}
+
+	private Observable<AppInfo> getNewRunningServicesObservable() {
+		return Observable.defer(new Func0<Observable<AppInfo>>() {
+			@Override
+			public Observable<AppInfo> call() {
+				return getRunningServicesObservable();
+			}
+
+			@NonNull
+			private Observable<AppInfo> getRunningServicesObservable() {
+				return Observable.from(activityManager.getRunningServices(Integer.MAX_VALUE)).
+						filter(new Func1<ActivityManager.RunningServiceInfo, Boolean>() {
+							@Override
+							public Boolean call(ActivityManager.RunningServiceInfo runningServiceProcessInfo) {
+								return installedAppsPackages.contains(runningServiceProcessInfo.service.getPackageName());
+							}
+						})
+						.distinct(new Func1<ActivityManager.RunningServiceInfo, Object>() {
+							@Override
+							public Object call(ActivityManager.RunningServiceInfo runningServiceInfo) {
+								return null;
+							}
+						})
+						.map(new Func1<ActivityManager.RunningServiceInfo, AppInfo>() {
+							@Override
+							public AppInfo call(ActivityManager.RunningServiceInfo runningServiceProcessInfo) {
+								return buildAppInfo(runningServiceProcessInfo.service.getPackageName(), runningServiceProcessInfo.pid);
+							}
+						});
+			}
+		}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
+	}
+
+	@NonNull
+	private AppInfo buildAppInfo(String packageName, int pid) {
+		ApplicationInfo androidAppInfo = null;
+		AppInfo appInfo = new AppInfo();
+		try {
+			androidAppInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
+			appInfo.setPid(pid);
+		} catch (PackageManager.NameNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		if (androidAppInfo != null) {
+			appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
+			appInfo.setIcon(getIconUri(androidAppInfo));
+		}
+		return appInfo;
 	}
 
 	private class AppsObserver implements Observer<AppInfo> {
@@ -135,6 +180,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		}
 		return iconUri;
 	}
+
 	private void initInstalledApps() {
 		Intent applicationIntent = new Intent(Intent.ACTION_MAIN);
 		applicationIntent.addCategory(Intent.CATEGORY_LAUNCHER);
@@ -142,7 +188,6 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		for (int i = 0; i < launcherResolves.size(); i++) {
 			ComponentInfo info = launcherResolves.get(i).activityInfo;
 			installedAppsPackages.add(info.packageName);
-			Timber.i(info.packageName + "/" + info.name);
 		}
 	}
 }

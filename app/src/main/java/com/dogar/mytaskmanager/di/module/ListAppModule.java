@@ -1,36 +1,30 @@
 package com.dogar.mytaskmanager.di.module;
 
-import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageManager;
 
-import com.dogar.mytaskmanager.App;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
 
-import javax.inject.Singleton;
-
 import dagger.Module;
 import dagger.Provides;
 
-@Singleton
 @Module
 public class ListAppModule {
 	private AppListPresenter.View appListView;
-
-	public ListAppModule(AppListPresenter.View appListView) {
+	private Context context;
+	public ListAppModule(AppListPresenter.View appListView,Context context) {
 		this.appListView = appListView;
+		this.context = context;
 	}
 
 	@Provides
-	public TasksAdapter provideTasksAdapter(Context context) {
+	public TasksAdapter provideTasksAdapter() {
 		return new TasksAdapter(context);
 	}
 
-
 	@Provides
-	public AppListPresenter provideAppListPresenter() {
+	public AppsListPresenterImpl provideAppListPresenter() {
 		return new AppsListPresenterImpl(appListView);
 	}
 

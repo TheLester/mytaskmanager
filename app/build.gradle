@@ -57,7 +57,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0'
     provided 'org.glassfish:javax.annotation:10.0-b28'
     //Reactive
-    compile 'io.reactivex:rxandroid:0.25.0'
+    compile 'io.reactivex:rxandroid:1.0.1'
     //Other
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.beardedhen:androidbootstrap:+'

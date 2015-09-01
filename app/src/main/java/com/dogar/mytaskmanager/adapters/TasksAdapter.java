@@ -1,7 +1,5 @@
 package com.dogar.mytaskmanager.adapters;
 
-import java.util.List;
-
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,10 +11,12 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.model.AppInfo;
-import com.dogar.mytaskmanager.utils.MemoryUtil;
+
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
 	private Context       context;
@@ -43,7 +43,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	public void onBindViewHolder(TaskVH holder, int position) {
 		AppInfo appInfo = tasks.get(position);
 		holder.appInfo.setText(appInfo.getTaskName());
-		holder.appMemoryInfo.setText(""+MemoryUtil.getProcessRamInMb(appInfo.getPid()));
+	//	holder.appMemoryInfo.setText("" + MemoryUtil.getProcessRamInMb(appInfo.getPid()));
 		holder.appCpuInfo.setText("dsaas");
 
 		Glide.with(context)
@@ -57,7 +57,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
 	@Override
 	public int getItemCount() {
-		return tasks.size();
+		return tasks == null ? 0 : tasks.size();
 	}
 
 	static class TaskVH extends RecyclerView.ViewHolder {
