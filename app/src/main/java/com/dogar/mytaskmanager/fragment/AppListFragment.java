@@ -15,23 +15,30 @@ import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
 import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import jp.wasabeef.recyclerview.animators.FadeInAnimator;
+import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 import timber.log.Timber;
 
 public class AppListFragment extends BaseFragment implements AppListPresenter.View, CircleRefreshLayout.OnCircleRefreshListener {
 
+	private static final int REFRESH_ANIM_DELAY_MILLIS = 2000;
 	@Bind(R.id.process_list)   RecyclerView        processList;
 	@Bind(R.id.refresh_layout) CircleRefreshLayout refreshLayout;
 
 
-	@Inject TasksAdapter          myTasksAdapter;
-	@Inject AppsListPresenterImpl appsListPresenter;
+	@Inject TasksAdapter            myTasksAdapter;
+	@Inject AppsListPresenterImpl   appsListPresenter;
+	@Inject ScaleInAnimationAdapter scaleInAnimationAdapter;
+	@Inject FadeInAnimator          fadeInAnimator;
 
 	private boolean isRefreshing;
+	private List<AppInfo> appInfos = new ArrayList<>();
 
 	public static Fragment newInstance() {
 		return new AppListFragment();
@@ -42,12 +49,13 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		refreshLayout.setOnRefreshListener(this);
 
 		DaggerAppListComponent.builder()
-				.listAppModule(new ListAppModule(this, getActivity()))
+				.listAppModule(new ListAppModule(this, getActivity(), appInfos))
 				.build()
 				.inject(this);
 
 		processList.setLayoutManager(new LinearLayoutManager(mActivity));
-		processList.setAdapter(myTasksAdapter);
+		processList.setItemAnimator(fadeInAnimator);
+		processList.setAdapter(scaleInAnimationAdapter);
 		appsListPresenter.loadAppList();
 	}
 
@@ -68,14 +76,14 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 			public void run() {
 				refreshLayout.finishRefreshing();
 			}
-		}, 2000);
+		}, REFRESH_ANIM_DELAY_MILLIS);
 	}
 
 
 	@Override
 	public void completeRefresh() {
 		isRefreshing = false;
-		myTasksAdapter.notifyDataSetChanged();
+		scaleInAnimationAdapter.notifyDataSetChanged();
 		Timber.i("Complete refresh!");
 	}
 
@@ -89,11 +97,14 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 
 	@Override
 	public void onAppListLoaded(List<AppInfo> runningApps) {
-		if (!runningApps.isEmpty() && isRefreshing) {
-			finishRefreshingWithDelay();
-		} else {
-			myTasksAdapter.setTasks(runningApps);
-			myTasksAdapter.notifyDataSetChanged();
+		if (!runningApps.isEmpty()) {
+			appInfos.clear();
+			appInfos.addAll(runningApps);
+			if (isRefreshing) {
+				finishRefreshingWithDelay();
+			} else {
+				scaleInAnimationAdapter.notifyDataSetChanged();
+			}
 		}
 		Timber.i("Done!");
 	}

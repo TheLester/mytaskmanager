@@ -50,6 +50,8 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.+'
     //Logging
     compile 'com.jakewharton.timber:timber:3.1.0'
+    //anim
+    compile 'jp.wasabeef:recyclerview-animators:1.2.2'
     //DI (Dagger2)
     compile 'javax.inject:javax.inject:1'
     compile 'javax.annotation:javax.annotation-api:1.2'

@@ -6,9 +6,9 @@
     android:layout_height="@dimen/app_card_height"
     android:layout_gravity="center"
     android:layout_margin="@dimen/size_normal"
-    custom:cardBackgroundColor="@color/lightgray"
-    custom:cardCornerRadius="4dp"
-    custom:cardElevation="4dp"
+    custom:cardBackgroundColor="@color/white"
+    custom:cardCornerRadius="2dp"
+    custom:cardElevation="3dp"
     custom:contentPadding="@dimen/size_normal">
 
     <RelativeLayout

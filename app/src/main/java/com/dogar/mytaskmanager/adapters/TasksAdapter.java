@@ -22,11 +22,8 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	private Context       context;
 	private List<AppInfo> tasks;
 
-	public TasksAdapter(Context context) {
+	public TasksAdapter(Context context, List<AppInfo> tasks) {
 		this.context = context;
-	}
-
-	public void setTasks(List<AppInfo> tasks) {
 		this.tasks = tasks;
 	}
 
