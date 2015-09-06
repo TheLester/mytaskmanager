@@ -10,12 +10,17 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
+import com.dogar.mytaskmanager.utils.MemoryUtil;
 
 import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
+import timber.log.Timber;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
@@ -40,16 +45,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 	public void onBindViewHolder(TaskVH holder, int position) {
 		AppInfo appInfo = tasks.get(position);
 		holder.appInfo.setText(appInfo.getTaskName());
-		holder.appMemoryInfo.setText(appInfo.getMemoryInfo());
-		holder.appCpuInfo.setText("dsaas");
+		holder.appMemoryInfo.setText(MemoryUtil.formatMemSize(context, appInfo.getMemoryInKb()));
 
 		Glide.with(context)
 				.load(appInfo.getIcon())
 				.centerCrop()
 				.crossFade()
 				.into(holder.appIcon);
-
-
 	}
 
 	@Override
@@ -57,15 +59,23 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 		return tasks == null ? 0 : tasks.size();
 	}
 
-	static class TaskVH extends RecyclerView.ViewHolder {
-		@Bind(R.id.process_icon)    ImageView appIcon;
-		@Bind(R.id.app_info_name)   TextView  appInfo;
-		@Bind(R.id.app_info_memory) TextView  appMemoryInfo;
-		@Bind(R.id.app_info_cpu)    TextView  appCpuInfo;
+	 class TaskVH extends RecyclerView.ViewHolder {
+		@Bind(R.id.processIcon)         ImageView appIcon;
+		@Bind(R.id.tvAppInfoName)       TextView  appInfo;
+		@Bind(R.id.tvAppInfoMemoryDesc) TextView  appMemoryInfo;
 
 		public TaskVH(View itemView) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
+		}
+		@OnClick(R.id.btnMoreAppInfo)
+		protected void moreInfoClicked(){
+			int position = getAdapterPosition();
+			if(position != RecyclerView.NO_POSITION){
+				AppInfo selectedApp = tasks.get(position);
+				EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp,appIcon));
+				Timber.i("Test");
+			}
 		}
 	}
 }

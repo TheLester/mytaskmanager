@@ -5,13 +5,14 @@
     <dimen name="activity_vertical_margin">16dp</dimen>
 
     <dimen name="app_card_height">100dp</dimen>
-    <dimen name="app_card_icon_size">50dp</dimen>
+        <dimen name="app_card_icon_size">50dp</dimen>
+    <dimen name="app_more_icon_size">90dp</dimen>
 
     <dimen name="size_big">12dp</dimen>
     <dimen name="size_normal">6dp</dimen>
     <dimen name="size_micro">2dp</dimen>
 
     <dimen name="text_size_big">16sp</dimen>
-    <dimen name="text_size_normal">12sp</dimen>
-
+    <dimen name="text_size_avg">14sp</dimen>
+    <dimen name="text_size_small">12sp</dimen>
 </resources>

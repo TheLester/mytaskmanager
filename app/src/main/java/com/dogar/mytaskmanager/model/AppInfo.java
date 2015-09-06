@@ -9,5 +9,5 @@ public class AppInfo {
 	private Uri    icon;
 	private String taskName;
 	private int    pid;
-	private String    memoryInfo;
+	private int    memoryInKb;
 }

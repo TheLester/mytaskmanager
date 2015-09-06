@@ -39,11 +39,11 @@
         android:id="@+id/openappinfo"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/openappinfo"
+        android:layout_above="@+id/infoIcon"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="92dp"
-        android:text="@string/open_app_info"
+        android:text="@string/abc_action_bar_home_description"
         android:textColor="#00FA00" />
 
 </RelativeLayout>

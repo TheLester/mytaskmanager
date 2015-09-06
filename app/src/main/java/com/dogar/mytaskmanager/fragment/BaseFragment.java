@@ -28,15 +28,10 @@ public abstract class BaseFragment extends Fragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		mRootView = inflater.inflate(getLayoutResourceId(), container, false);
-		ButterKnife.bind(this,mRootView);
+		injectViews(mRootView);
 		return mRootView;
 	}
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		injectViews(view);
-	}
 
 	private void injectViews(final View view) {
 		ButterKnife.bind(this, view);

@@ -5,7 +5,9 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.di.component.DaggerAppListComponent;
@@ -13,10 +15,12 @@ import com.dogar.mytaskmanager.di.module.ListAppModule;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
+import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
@@ -44,6 +48,22 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		return new AppListFragment();
 	}
 
+	protected int getLayoutResourceId() {
+		return R.layout.fragment_apps_list;
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		appsListPresenter.onStart();
+	}
+
+	@Override
+	public void onStop() {
+		appsListPresenter.onStop();
+		super.onStop();
+	}
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		refreshLayout.setOnRefreshListener(this);
@@ -59,26 +79,22 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		appsListPresenter.loadAppList();
 	}
 
-	protected int getLayoutResourceId() {
-		return R.layout.fragment_apps_list;
-	}
-
 
 	@Override
 	public void showProgress(boolean show) {
 
 	}
 
-
-	private void finishRefreshingWithDelay() {
-		refreshLayout.postDelayed(new Runnable() {
-			@Override
-			public void run() {
-				refreshLayout.finishRefreshing();
-			}
-		}, REFRESH_ANIM_DELAY_MILLIS);
+	@Override
+	public void onLoadAppMoreInfo(AppInfo app, ImageView iconHolder) {
+		final MoreAppInfoFragment toFragment = MoreAppInfoFragment.newInstance();
+		int iconSize = getIconImageSize();
+		FragmentTransitionLauncher
+				.with(getActivity())
+				.image(Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get())
+				.from(iconHolder).prepare(toFragment);
+		getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, toFragment).addToBackStack(null).commit();
 	}
-
 
 	@Override
 	public void completeRefresh() {
@@ -107,5 +123,18 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 			}
 		}
 		Timber.i("Done!");
+	}
+
+	private void finishRefreshingWithDelay() {
+		refreshLayout.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				refreshLayout.finishRefreshing();
+			}
+		}, REFRESH_ANIM_DELAY_MILLIS);
+	}
+
+	private int getIconImageSize() {
+		return (int) getResources().getDimension(R.dimen.app_card_icon_size);
 	}
 }

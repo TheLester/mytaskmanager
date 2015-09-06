@@ -1,7 +1,6 @@
 package com.dogar.mytaskmanager.mvp.impl;
 
 import android.app.ActivityManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ComponentInfo;
@@ -12,15 +11,16 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 
 import com.dogar.mytaskmanager.App;
+import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
-import com.dogar.mytaskmanager.utils.MemoryUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
 
+import de.greenrobot.event.EventBus;
 import rx.Observable;
 import rx.Observer;
 import rx.android.schedulers.AndroidSchedulers;
@@ -41,9 +41,22 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		this.mView = mView;
 		App.getInstance().component().inject(this);
 		initInstalledApps();
+
+	}
+	@Override
+	public void onStart() {
+		EventBus.getDefault().register(this);
 	}
 
+	@Override
+	public void onStop() {
+		EventBus.getDefault().unregister(this);
+	}
 
+	public void onEvent(EventHolder.MoreAppInfoRequestedEvent event){
+		mView.onLoadAppMoreInfo(event.appInfo,event.imageView);
+
+	}
 	@Override
 	public void loadAppList() {
 		loadAppsInfos();
@@ -62,22 +75,6 @@ public class AppsListPresenterImpl implements AppListPresenter {
 			getNewRunningAppsObservable().subscribe(new AppsObserver());
 		}
 	}
-
-	@Override
-	public void loadAppMoreInfo(App app) {
-
-	}
-
-	@Override
-	public void onStart(Context context) {
-
-	}
-
-	@Override
-	public void onStop() {
-
-	}
-
 
 	private Observable<AppInfo> getNewRunningAppsObservable() {
 		return Observable.defer(new Func0<Observable<AppInfo>>() {
@@ -151,7 +148,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		if (androidAppInfo != null) {
 			appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
 			appInfo.setIcon(getIconUri(androidAppInfo));
-			appInfo.setMemoryInfo(MemoryUtil.formatMemSize(activityManager.getProcessMemoryInfo(new int[]{pid})[0].getTotalPss()));
+			appInfo.setMemoryInKb(activityManager.getProcessMemoryInfo(new int[]{pid})[0].getTotalPss());
 		}
 		return appInfo;
 	}
