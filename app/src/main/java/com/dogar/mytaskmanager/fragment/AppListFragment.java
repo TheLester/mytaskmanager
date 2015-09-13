@@ -18,6 +18,8 @@ import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
 import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 import com.tuesda.walker.circlerefresh.CircleRefreshLayout;
 
+import org.parceler.Parcels;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -86,14 +88,26 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	}
 
 	@Override
-	public void onLoadAppMoreInfo(AppInfo app, ImageView iconHolder) {
+	public void onLoadAppMoreInfo(final AppInfo app,final ImageView iconHolder) {
 		final MoreAppInfoFragment toFragment = MoreAppInfoFragment.newInstance();
-		int iconSize = getIconImageSize();
-		FragmentTransitionLauncher
-				.with(getActivity())
-				.image(Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get())
-				.from(iconHolder).prepare(toFragment);
-		getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, toFragment).addToBackStack(null).commit();
+		final int iconSize = getIconImageSize();
+		new Thread(){
+			@Override
+			public void run() {
+				try {
+					FragmentTransitionLauncher
+							.with(getActivity())
+							.image(Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get())
+							.from(iconHolder).prepare(toFragment);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+				toFragment.getArguments().putParcelable(MoreAppInfoFragment.APP_INFO_OBJ, Parcels.wrap(app));
+				getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, toFragment).addToBackStack(null).commit();
+			}
+		}.start();
 	}
 
 	@Override

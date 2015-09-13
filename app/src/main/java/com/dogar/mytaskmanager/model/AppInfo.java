@@ -2,12 +2,23 @@ package com.dogar.mytaskmanager.model;
 
 import android.net.Uri;
 
+import org.parceler.Parcel;
+
 import lombok.Data;
 
 @Data
+@Parcel
 public class AppInfo {
-	private Uri    icon;
-	private String taskName;
-	private int    pid;
-	private int    memoryInKb;
+	Uri    icon;
+	String taskName;
+	String packageName;
+	int    pid;
+	int    memoryInKb;
+	long   firstInstallTimestamp;
+	long   lastUpdateTimestamp;
+	String version;
+	boolean isCurrentApp;
+
+	public AppInfo() {
+	}
 }

@@ -8,6 +8,7 @@
         <dimen name="app_card_icon_size">50dp</dimen>
     <dimen name="app_more_icon_size">90dp</dimen>
 
+    <dimen name="size_material_stand">16dp</dimen>
     <dimen name="size_big">12dp</dimen>
     <dimen name="size_normal">6dp</dimen>
     <dimen name="size_micro">2dp</dimen>

@@ -13,6 +13,11 @@
     <string name="memory_kb">Kb</string>
     <string name="memory_mb">Mb</string>
     <string name="memory_gb">Gb</string>
-    <string name="memory_descr">Memory usage:</string>
+    <string name="package_name">Package name:&#160;</string>
+    <string name="version">Version:&#160;</string>
+    <string name="installTime">Install time:&#160;</string>
+    <string name="updateTime">Last update:&#160;</string>
+    <string name="pid">Process id:&#160;</string>
+    <string name="memory">Memory usage:&#160;</string>
 
 </resources>

@@ -8,55 +8,60 @@
     android:layout_margin="@dimen/size_normal"
     custom:cardBackgroundColor="@color/white"
     custom:cardCornerRadius="2dp"
-    custom:cardElevation="3dp"
+    custom:cardElevation="@dimen/size_normal"
     custom:contentPadding="@dimen/size_normal">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/processIcon"
-            android:layout_width="@dimen/app_card_icon_size"
-            android:layout_height="@dimen/app_card_icon_size"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="@dimen/size_normal"/>
-
         <TextView
             android:id="@+id/tvAppInfoName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/processIcon"
+            android:layout_alignParentTop="true"
             android:padding="@dimen/size_normal"
             android:singleLine="true"
             android:textColor="@color/darkgray"
             android:textSize="@dimen/text_size_big"
             android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/processIcon"
+            android:layout_width="@dimen/app_card_icon_size"
+            android:layout_height="@dimen/app_card_icon_size"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/tvAppInfoName"
+            android:layout_margin="@dimen/size_normal"
+            />
+
+
         <com.rey.material.widget.CheckBox
             style="@style/Material.Drawable.CheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
+            android:layout_margin="@dimen/size_normal"
             custom:cbd_boxSize="30dp"
-            custom:cbd_width="30dp"
-            custom:cbd_height="30dp"
-            custom:cbd_strokeSize="3dp"
             custom:cbd_cornerRadius="3dp"
+            custom:cbd_height="30dp"
             custom:cbd_strokeColor="@color/darkgreen"
+            custom:cbd_strokeSize="3dp"
+            custom:cbd_width="30dp"
             />
+
         <TextView
             android:id="@+id/tvAppInfoMemory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignTop="@id/processIcon"
             android:layout_toRightOf="@id/processIcon"
-            android:layout_below="@id/tvAppInfoName"
             android:singleLine="true"
+            android:text="@string/memory"
             android:textColor="@color/darkgreen"
             android:textSize="@dimen/text_size_avg"
             android:textStyle="bold"
-            android:text="@string/memory_descr"
             />
 
         <TextView
@@ -64,26 +69,28 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tvAppInfoMemory"
+            android:layout_marginBottom="@dimen/size_normal"
             android:layout_toRightOf="@id/processIcon"
             android:singleLine="true"
             android:textColor="@color/gray"
             android:textSize="@dimen/text_size_small"
             android:textStyle="italic"
-            android:layout_marginBottom="@dimen/size_normal"
             />
+
         <com.beardedhen.androidbootstrap.BootstrapButton
             android:id="@+id/btnMoreAppInfo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="@dimen/text_size_avg"
-            android:text="@string/more_info"
-            android:layout_below="@id/tvAppInfoMemoryDesc"
-            android:layout_centerHorizontal="true"
             android:layout_alignParentBottom="true"
-            custom:bb_roundedCorners="true"
+            android:layout_below="@id/processIcon"
+            android:layout_marginTop="@dimen/size_normal"
+            android:layout_centerHorizontal="true"
+            android:text="@string/more_info"
+            android:textSize="@dimen/text_size_avg"
             custom:bb_icon_right="fa-arrow-circle-right"
-            custom:bb_type="success"
+            custom:bb_roundedCorners="true"
             custom:bb_size="xsmall"
+            custom:bb_type="success"
             />
     </RelativeLayout>
 </android.support.v7.widget.CardView>

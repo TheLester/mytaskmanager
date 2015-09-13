@@ -1,13 +1,16 @@
 package com.dogar.mytaskmanager.mvp.impl;
 
 import android.app.ActivityManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.ComponentInfo;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Debug;
 import android.support.annotation.NonNull;
 
 import com.dogar.mytaskmanager.App;
@@ -36,6 +39,8 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 	@Inject PackageManager  packageManager;
 	@Inject ActivityManager activityManager;
+	@Inject Context         context;
+
 
 	public AppsListPresenterImpl(View mView) {
 		this.mView = mView;
@@ -43,6 +48,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		initInstalledApps();
 
 	}
+
 	@Override
 	public void onStart() {
 		EventBus.getDefault().register(this);
@@ -53,10 +59,11 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		EventBus.getDefault().unregister(this);
 	}
 
-	public void onEvent(EventHolder.MoreAppInfoRequestedEvent event){
-		mView.onLoadAppMoreInfo(event.appInfo,event.imageView);
+	public void onEvent(EventHolder.MoreAppInfoRequestedEvent event) {
+		mView.onLoadAppMoreInfo(event.appInfo, event.imageView);
 
 	}
+
 	@Override
 	public void loadAppList() {
 		loadAppsInfos();
@@ -137,18 +144,34 @@ public class AppsListPresenterImpl implements AppListPresenter {
 	@NonNull
 	private AppInfo buildAppInfo(String packageName, int pid) {
 		ApplicationInfo androidAppInfo = null;
+		PackageInfo packageInfo = null;
+
+
 		AppInfo appInfo = new AppInfo();
+		appInfo.setPackageName(packageName);
 		try {
 			androidAppInfo = packageManager.getApplicationInfo(packageName, PackageManager.GET_META_DATA);
 			appInfo.setPid(pid);
+			packageInfo = packageManager.getPackageInfo(packageName, 0);
 		} catch (PackageManager.NameNotFoundException e) {
 			e.printStackTrace();
+			Timber.e(e, "fail to retrieve info");
 		}
 
 		if (androidAppInfo != null) {
 			appInfo.setTaskName(packageManager.getApplicationLabel(androidAppInfo).toString());
 			appInfo.setIcon(getIconUri(androidAppInfo));
-			appInfo.setMemoryInKb(activityManager.getProcessMemoryInfo(new int[]{pid})[0].getTotalPss());
+			appInfo.setCurrentApp(context.getPackageName().equals(packageName));
+		}
+
+		Debug.MemoryInfo memoryInfo = activityManager.getProcessMemoryInfo(new int[]{pid})[0];//todo add more app pids
+		if (memoryInfo != null) {
+			appInfo.setMemoryInKb(memoryInfo.getTotalPss());
+		}
+		if (packageInfo != null) {
+			appInfo.setFirstInstallTimestamp(packageInfo.firstInstallTime);
+			appInfo.setLastUpdateTimestamp(packageInfo.lastUpdateTime);
+			appInfo.setVersion(packageInfo.versionName);
 		}
 		return appInfo;
 	}

@@ -52,6 +52,7 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 				.centerCrop()
 				.crossFade()
 				.into(holder.appIcon);
+
 	}
 
 	@Override
@@ -59,21 +60,22 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 		return tasks == null ? 0 : tasks.size();
 	}
 
-	 class TaskVH extends RecyclerView.ViewHolder {
-		@Bind(R.id.processIcon)         ImageView appIcon;
-		@Bind(R.id.tvAppInfoName)       TextView  appInfo;
-		@Bind(R.id.tvAppInfoMemoryDesc) TextView  appMemoryInfo;
+	class TaskVH extends RecyclerView.ViewHolder {
+		@Bind(R.id.processIcon)         ImageView      appIcon;
+		@Bind(R.id.tvAppInfoName)       TextView       appInfo;
+		@Bind(R.id.tvAppInfoMemoryDesc) TextView       appMemoryInfo;
 
 		public TaskVH(View itemView) {
 			super(itemView);
 			ButterKnife.bind(this, itemView);
 		}
+
 		@OnClick(R.id.btnMoreAppInfo)
-		protected void moreInfoClicked(){
+		protected void moreInfoClicked() {
 			int position = getAdapterPosition();
-			if(position != RecyclerView.NO_POSITION){
+			if (position != RecyclerView.NO_POSITION) {
 				AppInfo selectedApp = tasks.get(position);
-				EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp,appIcon));
+				EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp, appIcon));
 				Timber.i("Test");
 			}
 		}
