@@ -2,6 +2,8 @@ package com.dogar.mytaskmanager.fragment;
 
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,7 +12,6 @@ import android.util.DisplayMetrics;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
-import android.view.animation.LinearInterpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -27,6 +28,7 @@ import org.parceler.Parcels;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.OnClick;
 
 public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTransition.ExitListener {
     public static final String APP_INFO_OBJ = "app_info";
@@ -46,12 +48,12 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
     TextView  pid;
     @Bind(R.id.tvMemory)
     TextView  memory;
-
     @Bind(R.id.detail_card_view)
     CardView detailCard;
     @Inject
     Context  context;
 
+    private AppInfo currentAppInfo;
     private int screenHeight;
 
     public static MoreAppInfoFragment newInstance() {
@@ -62,6 +64,12 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
     @Override
     protected int getLayoutResourceId() {
         return R.layout.fragment_more_app_info;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        currentAppInfo = Parcels.unwrap(getArguments().getParcelable(APP_INFO_OBJ));
     }
 
     @Override
@@ -79,15 +87,24 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
     public void onFragmentExit() {
         animateOutInfoPanel();
     }
-
+    @OnClick(R.id.btnShowInAndroidDetails)
+    protected void showInAndroidDetails(){
+        Intent appInfoIntent = new Intent();
+        appInfoIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+        appInfoIntent.setData(Uri.fromParts("package", currentAppInfo.getPackageName(), null));
+        startActivity(appInfoIntent);
+    }
+    @OnClick(R.id.btnKillCurrentApp)
+    protected void killCurrentApp(){
+            //TODO impl
+    }
     private void fillViews() {
-        AppInfo currentApp = Parcels.unwrap(getArguments().getParcelable(APP_INFO_OBJ));
-        packageName.setText(currentApp.getPackageName());
-        version.setText(currentApp.getVersion());
-        installTime.setText(CommonUtils.getStringDate(currentApp.getFirstInstallTimestamp(), context));
-        updateTime.setText(CommonUtils.getStringDate(currentApp.getLastUpdateTimestamp(), context));
-        pid.setText(String.valueOf(currentApp.getPid()));
-        memory.setText(MemoryUtil.formatMemSize(context, currentApp.getMemoryInKb()));
+        packageName.setText(currentAppInfo.getPackageName());
+        version.setText(currentAppInfo.getVersion());
+        installTime.setText(CommonUtils.getStringDate(currentAppInfo.getFirstInstallTimestamp(), context));
+        updateTime.setText(CommonUtils.getStringDate(currentAppInfo.getLastUpdateTimestamp(), context));
+        pid.setText(String.valueOf(currentAppInfo.getPid()));
+        memory.setText(MemoryUtil.formatMemSize(context, currentAppInfo.getMemoryInKb()));
     }
 
     private void animateInInfoPanel() {
@@ -120,14 +137,25 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
     private void animateOutInfoPanel() {
         ObjectAnimator moveAnim = ObjectAnimator.ofFloat(detailCard, "Y", screenHeight);
         moveAnim.setDuration(ANIM_DURATION);
-        moveAnim.setInterpolator(new LinearInterpolator());
+        moveAnim.setInterpolator(new MaterialInterpolator());
         moveAnim.start();
     }
+    private float applyMaterialInterpolation(float x){
+        return (float) (6 * Math.pow(x, 2) - 8 * Math.pow(x, 3) + 3 * Math.pow(x, 4));
+    }
 
+    private class MaterialInterpolator implements Interpolator{
+
+        @Override
+        public float getInterpolation(float input) {
+            return applyMaterialInterpolation(input);
+        }
+    }
     private class ReverseInterpolator implements Interpolator {
         @Override
         public float getInterpolation(float paramFloat) {
-            return Math.abs(paramFloat - 1f);
+            return Math.abs(applyMaterialInterpolation(paramFloat) - 1f);
         }
     }
+
 }

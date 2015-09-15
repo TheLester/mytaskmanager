@@ -24,104 +24,147 @@
         app:cardCornerRadius="2dp"
         app:cardElevation="@dimen/size_normal"
         app:contentPadding="@dimen/size_normal">
+        <RelativeLayout android:layout_width="wrap_content"
+                       android:layout_height="wrap_content">
+            <android.support.v7.widget.GridLayout
+                android:id="@+id/detail_additional_pane"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/size_normal"
+                app:columnCount="2">
 
-        <android.support.v7.widget.GridLayout
-            android:id="@+id/detail_additional_pane"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:padding="@dimen/size_normal"
-            app:columnCount="2">
+                <TextView
+                    android:id="@+id/packageNameRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/package_name"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"
+                    />
 
-            <TextView
-                android:id="@+id/packageNameRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/package_name"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"
+                <TextView
+                    android:id="@+id/packageName"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+
+                <TextView
+                    android:id="@+id/versionRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/version"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"/>
+
+                <TextView
+                    android:id="@+id/version"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+
+                <TextView
+                    android:id="@+id/installTimeRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/installTime"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"/>
+
+                <TextView
+                    android:id="@+id/installTime"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+
+                <TextView
+                    android:id="@+id/updateTimeRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/updateTime"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"/>
+
+                <TextView
+                    android:id="@+id/updateTime"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+
+                <TextView
+                    android:id="@+id/pidRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/pid"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"/>
+
+                <TextView
+                    android:id="@+id/tvPid"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+
+                <TextView
+                    android:id="@+id/memoryRow"
+                    android:fontFamily="sans-serif"
+                    android:gravity="center_vertical"
+                    android:text="@string/memory"
+                    android:textColor="@color/darkgray"
+                    app:layout_gravity="fill"
+                    app:layout_rowWeight="1"/>
+
+                <TextView
+                    android:id="@+id/tvMemory"
+                    android:gravity="center_vertical"
+                    android:textColor="@color/gray"
+                    app:layout_gravity="fill"/>
+            </android.support.v7.widget.GridLayout>
+            <View
+                android:id="@+id/gray_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/detail_additional_pane"
+                android:layout_margin="@dimen/size_normal"
+                android:background="@color/lightgray"
                 />
-
-            <TextView
-                android:id="@+id/packageName"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-
-            <TextView
-                android:id="@+id/versionRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/version"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"/>
-
-            <TextView
-                android:id="@+id/version"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-
-            <TextView
-                android:id="@+id/installTimeRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/installTime"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"/>
-
-            <TextView
-                android:id="@+id/installTime"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-
-            <TextView
-                android:id="@+id/updateTimeRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/updateTime"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"/>
-
-            <TextView
-                android:id="@+id/updateTime"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-
-            <TextView
-                android:id="@+id/pidRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/pid"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"/>
-
-            <TextView
-                android:id="@+id/tvPid"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-
-            <TextView
-                android:id="@+id/memoryRow"
-                android:fontFamily="sans-serif"
-                android:gravity="center_vertical"
-                android:text="@string/memory"
-                android:textColor="@color/darkgray"
-                app:layout_gravity="fill"
-                app:layout_rowWeight="1"/>
-
-            <TextView
-                android:id="@+id/tvMemory"
-                android:gravity="center_vertical"
-                android:textColor="@color/gray"
-                app:layout_gravity="fill"/>
-        </android.support.v7.widget.GridLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/gray_divider"
+                android:layout_centerHorizontal="true"
+                >
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnShowInAndroidDetails"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/show_in_android_info"
+                    android:textSize="@dimen/text_size_avg"
+                    app:bb_icon_left="fa-info"
+                    android:layout_margin="@dimen/size_micro"
+                    app:bb_icon_right="fa-android"
+                    app:bb_roundedCorners="true"
+                    app:bb_size="small"
+                    app:bb_type="info"
+                    />
+                <com.beardedhen.androidbootstrap.BootstrapButton
+                    android:id="@+id/btnKillCurrentApp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/kill_app"
+                    android:layout_margin="@dimen/size_micro"
+                    android:textSize="@dimen/text_size_avg"
+                    app:bb_icon_left="fa-exclamation"
+                    app:bb_icon_right="fa-close"
+                    app:bb_roundedCorners="true"
+                    app:bb_size="small"
+                    app:bb_type="danger"
+                    />
+            </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.CardView>
 </RelativeLayout>

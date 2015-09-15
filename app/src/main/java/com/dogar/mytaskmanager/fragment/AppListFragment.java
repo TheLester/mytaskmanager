@@ -67,18 +67,24 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	}
 
 	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		refreshLayout.setOnRefreshListener(this);
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 
 		DaggerAppListComponent.builder()
 				.listAppModule(new ListAppModule(this, getActivity(), appInfos))
 				.build()
 				.inject(this);
 
+		appsListPresenter.loadAppList();
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		refreshLayout.setOnRefreshListener(this);
+
 		processList.setLayoutManager(new LinearLayoutManager(mActivity));
 		processList.setItemAnimator(fadeInAnimator);
 		processList.setAdapter(scaleInAnimationAdapter);
-		appsListPresenter.loadAppList();
 	}
 
 
