@@ -1,6 +1,8 @@
 package com.dogar.mytaskmanager.adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +20,7 @@ import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnCheckedChanged;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import timber.log.Timber;
@@ -78,6 +81,13 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 				EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp, appIcon));
 				Timber.i("Test");
 			}
+		}
+		@OnCheckedChanged(R.id.cbTaskBox)
+		protected void checkedAppChanged(){
+			Snackbar.make(findViewById(android.R.id.content), "Had a snack at Snackbar", Snackbar.LENGTH_LONG)
+					.setAction("Undo", mOnClickListener)
+					.setActionTextColor(Color.RED)
+					.show();
 		}
 	}
 }

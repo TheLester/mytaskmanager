@@ -24,12 +24,14 @@
         app:cardCornerRadius="2dp"
         app:cardElevation="@dimen/size_normal"
         app:contentPadding="@dimen/size_normal">
-        <RelativeLayout android:layout_width="wrap_content"
-                       android:layout_height="wrap_content">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
             <android.support.v7.widget.GridLayout
                 android:id="@+id/detail_additional_pane"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
                 android:padding="@dimen/size_normal"
                 app:columnCount="2">
 
@@ -142,10 +144,10 @@
                     android:id="@+id/btnShowInAndroidDetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/size_micro"
                     android:text="@string/show_in_android_info"
                     android:textSize="@dimen/text_size_avg"
                     app:bb_icon_left="fa-info"
-                    android:layout_margin="@dimen/size_micro"
                     app:bb_icon_right="fa-android"
                     app:bb_roundedCorners="true"
                     app:bb_size="small"
@@ -155,8 +157,8 @@
                     android:id="@+id/btnKillCurrentApp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/kill_app"
                     android:layout_margin="@dimen/size_micro"
+                    android:text="@string/kill_app"
                     android:textSize="@dimen/text_size_avg"
                     app:bb_icon_left="fa-exclamation"
                     app:bb_icon_right="fa-close"
