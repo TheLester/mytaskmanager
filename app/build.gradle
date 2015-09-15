@@ -51,7 +51,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:22.0.+'
     compile 'com.android.support:gridlayout-v7:22.0.+'
 
-    compile 'com.kogitune:pre-lollipop-activity-transition:1.0.0'
+//    compile 'com.kogitune:pre-lollipop-activity-transition:1.0.0'
     //Logging
     compile 'com.jakewharton.timber:timber:3.1.0'
     //anim
@@ -79,6 +79,7 @@ dependencies {
     apt "org.parceler:parceler:+"
     //libs as module
     compile project(':circlerefresh')
+    compile project(':pre-lollipop-activity-transition')
     //crashlytics
     compile('com.crashlytics.sdk.android:crashlytics:2.5.0@aar') {
         transitive = true;

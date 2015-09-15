@@ -1,1 +1,1 @@
-include ':app' ,':circlerefresh'
+include ':app', ':circlerefresh', ':pre-lollipop-activity-transition'

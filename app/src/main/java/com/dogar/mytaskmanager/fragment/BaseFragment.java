@@ -32,7 +32,6 @@ public abstract class BaseFragment extends Fragment {
 		return mRootView;
 	}
 
-
 	private void injectViews(final View view) {
 		ButterKnife.bind(this, view);
 	}
