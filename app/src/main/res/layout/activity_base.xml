@@ -7,7 +7,16 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/blue"/>
+        android:background="@color/md_green_500">
+
+        <TextView
+            android:id="@+id/ramUsageInfo"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:textColor="@color/white"
+            />
+
+    </android.support.v7.widget.Toolbar>
 
     <FrameLayout
         android:id="@+id/fragmentContainer"

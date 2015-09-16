@@ -47,7 +47,7 @@
             custom:cbd_boxSize="30dp"
             custom:cbd_cornerRadius="3dp"
             custom:cbd_height="30dp"
-            custom:cbd_strokeColor="@color/darkgreen"
+            custom:cbd_strokeColor="@color/md_green_900"
             custom:cbd_strokeSize="3dp"
             custom:cbd_width="30dp"
             />
@@ -60,7 +60,7 @@
             android:layout_toRightOf="@id/processIcon"
             android:singleLine="true"
             android:text="@string/memory"
-            android:textColor="@color/darkgreen"
+            android:textColor="@color/md_green_900"
             android:textSize="@dimen/text_size_avg"
             android:textStyle="bold"
             />
