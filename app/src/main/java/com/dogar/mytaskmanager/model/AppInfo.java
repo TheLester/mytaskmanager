@@ -18,6 +18,7 @@ public class AppInfo {
 	long   lastUpdateTimestamp;
 	String version;
 	boolean isCurrentApp;
+	boolean isChecked;
 
 	public AppInfo() {
 	}

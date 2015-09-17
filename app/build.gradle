@@ -50,8 +50,6 @@ dependencies {
     compile 'com.android.support:cardview-v7:22.0.+'
     compile 'com.android.support:recyclerview-v7:22.0.+'
     compile 'com.android.support:gridlayout-v7:22.0.+'
-
-//    compile 'com.kogitune:pre-lollipop-activity-transition:1.0.0'
     //Logging
     compile 'com.jakewharton.timber:timber:3.1.0'
     //anim
@@ -67,7 +65,8 @@ dependencies {
     //UI
     compile 'com.github.rey5137:material:1.2.1'
     compile 'com.beardedhen:androidbootstrap:+'
-
+    //db
+    compile 'io.realm:realm-android:0.82.2'
     //Other
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'

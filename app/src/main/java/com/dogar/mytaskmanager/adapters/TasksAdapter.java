@@ -13,6 +13,7 @@ import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.utils.MemoryUtil;
+import com.rey.material.widget.CheckBox;
 
 import java.util.List;
 
@@ -25,64 +26,71 @@ import timber.log.Timber;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
-	private Context       context;
-	private List<AppInfo> tasks;
+    private Context       context;
+    private List<AppInfo> tasks;
 
-	public TasksAdapter(Context context, List<AppInfo> tasks) {
-		this.context = context;
-		this.tasks = tasks;
-	}
+    public TasksAdapter(Context context, List<AppInfo> tasks) {
+        this.context = context;
+        this.tasks = tasks;
+    }
 
-	@Override
-	public TaskVH onCreateViewHolder(ViewGroup parent, int viewType) {
-		View v = LayoutInflater.from(parent.getContext())
-				.inflate(R.layout.item_app_card, parent, false);
+    @Override
+    public TaskVH onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_app_card, parent, false);
 
-		TaskVH vh = new TaskVH(v);
-		return vh;
-	}
+        TaskVH vh = new TaskVH(v);
+        return vh;
+    }
 
-	@Override
-	public void onBindViewHolder(TaskVH holder, int position) {
-		AppInfo appInfo = tasks.get(position);
-		holder.appInfo.setText(appInfo.getTaskName());
-		holder.appMemoryInfo.setText(MemoryUtil.formatMemSize(context, appInfo.getMemoryInKb()));
+    @Override
+    public void onBindViewHolder(TaskVH holder, int position) {
+        AppInfo appInfo = tasks.get(position);
+        holder.appInfo.setText(appInfo.getTaskName());
+        holder.appMemoryInfo.setText(MemoryUtil.formatMemSize(context, appInfo.getMemoryInKb()));
+        holder.cbAppChecked.setCheckedImmediately(appInfo.isChecked());
 
-		Glide.with(context)
-				.load(appInfo.getIcon())
-				.centerCrop()
-				.crossFade()
-				.into(holder.appIcon);
+        Glide.with(context)
+                .load(appInfo.getIcon())
+                .centerCrop()
+                .crossFade()
+                .into(holder.appIcon);
 
-	}
+    }
 
-	@Override
-	public int getItemCount() {
-		return tasks == null ? 0 : tasks.size();
-	}
+    @Override
+    public int getItemCount() {
+        return tasks == null ? 0 : tasks.size();
+    }
 
-	class TaskVH extends RecyclerView.ViewHolder {
-		@Bind(R.id.processIcon)         ImageView      appIcon;
-		@Bind(R.id.tvAppInfoName)       TextView       appInfo;
-		@Bind(R.id.tvAppInfoMemoryDesc) TextView       appMemoryInfo;
+    class TaskVH extends RecyclerView.ViewHolder {
+        @Bind(R.id.processIcon)         ImageView appIcon;
+        @Bind(R.id.tvAppInfoName)       TextView  appInfo;
+        @Bind(R.id.tvAppInfoMemoryDesc) TextView  appMemoryInfo;
+        @Bind(R.id.cbAppChecked)        CheckBox  cbAppChecked;
 
-		public TaskVH(View itemView) {
-			super(itemView);
-			ButterKnife.bind(this, itemView);
-		}
+        public TaskVH(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
+        }
 
-		@OnClick(R.id.btnMoreAppInfo)
-		protected void moreInfoClicked() {
-			int position = getAdapterPosition();
-			if (position != RecyclerView.NO_POSITION) {
-				AppInfo selectedApp = tasks.get(position);
-				EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp, appIcon));
-				Timber.i("Test");
-			}
-		}
-		@OnCheckedChanged(R.id.cbTaskBox)
-		protected void checkedAppChanged(){
+        @OnClick(R.id.btnMoreAppInfo)
+        protected void moreInfoClicked() {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                AppInfo selectedApp = tasks.get(position);
+                EventBus.getDefault().post(new EventHolder.MoreAppInfoRequestedEvent(selectedApp, appIcon));
+                Timber.i("Test");
+            }
+        }
 
-		}
-	}
+        @OnCheckedChanged(R.id.cbAppChecked)
+        protected void checkedAppChanged(boolean checked) {
+            int position = getAdapterPosition();
+            if (position != RecyclerView.NO_POSITION) {
+                AppInfo selectedApp = tasks.get(position);
+                selectedApp.setChecked(checked);
+            }
+        }
+    }
 }
