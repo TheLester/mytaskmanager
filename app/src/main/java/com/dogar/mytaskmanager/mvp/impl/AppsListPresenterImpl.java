@@ -17,6 +17,7 @@ import com.dogar.mytaskmanager.App;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
+import com.dogar.mytaskmanager.utils.NewApiProcessManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,7 +78,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 	private void loadAppsInfos() {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
-			getNewRunningServicesObservable().subscribe(new AppsObserver());
+			getNewRunningAppsFromNewApiObservable().subscribe(new AppsObserver());
 		} else {
 			getNewRunningAppsObservable().subscribe(new AppsObserver());
 		}
@@ -109,7 +110,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		}).subscribeOn(Schedulers.io()).observeOn(AndroidSchedulers.mainThread());
 	}
 
-	private Observable<AppInfo> getNewRunningServicesObservable() {
+	private Observable<AppInfo> getNewRunningAppsFromNewApiObservable() {
 		return Observable.defer(new Func0<Observable<AppInfo>>() {
 			@Override
 			public Observable<AppInfo> call() {
@@ -118,23 +119,23 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 			@NonNull
 			private Observable<AppInfo> getRunningServicesObservable() {
-				return Observable.from(activityManager.getRunningServices(Integer.MAX_VALUE)).
-						filter(new Func1<ActivityManager.RunningServiceInfo, Boolean>() {
+				return Observable.from(NewApiProcessManager.getRunningApps()).
+						filter(new Func1<NewApiProcessManager.Process, Boolean>() {
 							@Override
-							public Boolean call(ActivityManager.RunningServiceInfo runningServiceProcessInfo) {
-								return installedAppsPackages.contains(runningServiceProcessInfo.service.getPackageName());
+							public Boolean call(NewApiProcessManager.Process process) {
+								return installedAppsPackages.contains(process.getPackageName());
 							}
 						})
-						.distinct(new Func1<ActivityManager.RunningServiceInfo, Object>() {
+						.distinct(new Func1<NewApiProcessManager.Process, Object>() {
 							@Override
-							public Object call(ActivityManager.RunningServiceInfo runningServiceInfo) {
-								return null;
+							public String call(NewApiProcessManager.Process process) {
+								return process.getPackageName();
 							}
 						})
-						.map(new Func1<ActivityManager.RunningServiceInfo, AppInfo>() {
+						.map(new Func1<NewApiProcessManager.Process, AppInfo>() {
 							@Override
-							public AppInfo call(ActivityManager.RunningServiceInfo runningServiceProcessInfo) {
-								return buildAppInfo(runningServiceProcessInfo.service.getPackageName(), runningServiceProcessInfo.pid);
+							public AppInfo call(NewApiProcessManager.Process process) {
+								return buildAppInfo(process.getPackageName(), process.pid);
 							}
 						});
 			}

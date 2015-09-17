@@ -8,13 +8,31 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/md_green_500">
+        <RelativeLayout android:layout_width="wrap_content"
+                        android:gravity="right"
+                        android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/ramUsageInfo"
-            android:layout_width="wrap_content" android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:textColor="@color/white"
-            />
+            <TextView
+                android:id="@+id/ramUsageInfo"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/size_normal"
+                android:textColor="@color/white"
+                android:text="@string/ram_used"
+                android:textSize="16sp"
+                />
+            <TextView
+                android:id="@+id/ramUsageInfoValue"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/ramUsageInfo"
+                android:layout_gravity="right"
+                android:layout_marginRight="@dimen/size_normal"
+                android:textColor="@color/white"
+                android:textSize="16sp"
+                />
+
+        </RelativeLayout>
+
 
     </android.support.v7.widget.Toolbar>
 

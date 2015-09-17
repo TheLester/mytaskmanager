@@ -14,8 +14,8 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
-    @Bind(R.id.toolbar)      Toolbar  toolbar;
-    @Bind(R.id.ramUsageInfo) TextView ramUsageLabel;
+    @Bind(R.id.toolbar)           Toolbar  toolbar;
+    @Bind(R.id.ramUsageInfoValue) TextView ramUsageLabel;
 
     private FragmentManager mFm = getSupportFragmentManager();
 
@@ -78,6 +78,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void setupToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);
+
     }
 
     protected enum AnimationDirection {

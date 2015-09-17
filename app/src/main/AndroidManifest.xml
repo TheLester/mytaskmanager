@@ -31,8 +31,7 @@
         >
 
         <activity
-            android:name="com.dogar.mytaskmanager.activity.MainActivity"
-            android:label="@string/title_activity_proc_info">
+            android:name="com.dogar.mytaskmanager.activity.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
