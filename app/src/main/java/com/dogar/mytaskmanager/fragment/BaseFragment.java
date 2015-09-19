@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.activity.BaseActivity;
+import com.squareup.leakcanary.RefWatcher;
 
 import butterknife.ButterKnife;
 
@@ -30,6 +32,13 @@ public abstract class BaseFragment extends Fragment {
 		mRootView = inflater.inflate(getLayoutResourceId(), container, false);
 		injectViews(mRootView);
 		return mRootView;
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		RefWatcher refWatcher = TaskManagerApp.getRefWatcher(getActivity());
+		refWatcher.watch(this);
 	}
 
 	private void injectViews(final View view) {

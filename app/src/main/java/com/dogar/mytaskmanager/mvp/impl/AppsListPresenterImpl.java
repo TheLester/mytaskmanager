@@ -13,7 +13,7 @@ import android.os.Build;
 import android.os.Debug;
 import android.support.annotation.NonNull;
 
-import com.dogar.mytaskmanager.App;
+import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
@@ -45,7 +45,7 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 	public AppsListPresenterImpl(View mView) {
 		this.mView = mView;
-		App.getInstance().component().inject(this);
+		TaskManagerApp.getInstance().component().inject(this);
 		initInstalledApps();
 
 	}

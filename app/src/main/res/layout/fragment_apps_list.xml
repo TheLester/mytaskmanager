@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.tuesda.walker.circlerefresh.CircleRefreshLayout
-    android:id="@+id/refresh_layout"
+<com.cjj.MaterialRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:AniBackColor="@color/md_green_500"
-    app:AniForeColor="@color/lightgray"
-    app:CircleSmaller="6">
+    app:overlay="true"
+    app:wave_show="true"
+    app:wave_color="@android:color/transparent"
+    >
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/process_list"
@@ -15,4 +16,4 @@
         android:layout_height="match_parent"
         android:background="@color/lightgray"
         android:scrollbars="none"/>
-</com.tuesda.walker.circlerefresh.CircleRefreshLayout>
+</com.cjj.MaterialRefreshLayout>

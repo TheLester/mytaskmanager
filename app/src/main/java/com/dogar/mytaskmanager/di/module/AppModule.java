@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Handler;
 
-import com.dogar.mytaskmanager.App;
+import com.dogar.mytaskmanager.TaskManagerApp;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,7 +25,7 @@ public class AppModule {
 
 	@Provides
 	public Context provideContext() {
-		return App.getInstance().getApplicationContext();
+		return TaskManagerApp.getInstance().getApplicationContext();
 	}
 
 	@Provides

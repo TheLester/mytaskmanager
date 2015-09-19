@@ -24,9 +24,11 @@
         app:cardCornerRadius="2dp"
         app:cardElevation="@dimen/size_normal"
         app:contentPadding="@dimen/size_normal">
+
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
+
             <android.support.v7.widget.GridLayout
                 android:id="@+id/detail_additional_pane"
                 android:layout_width="match_parent"
@@ -42,14 +44,14 @@
                     android:text="@string/package_name"
                     android:textColor="@color/darkgray"
                     app:layout_gravity="fill"
-                    app:layout_rowWeight="1"
                     />
 
                 <TextView
                     android:id="@+id/packageName"
                     android:gravity="center_vertical"
                     android:textColor="@color/gray"
-                    app:layout_gravity="fill"/>
+                    app:layout_gravity="fill"
+                    />
 
                 <TextView
                     android:id="@+id/versionRow"
@@ -126,47 +128,43 @@
                     android:textColor="@color/gray"
                     app:layout_gravity="fill"/>
             </android.support.v7.widget.GridLayout>
-            <View
-                android:id="@+id/gray_divider"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_below="@id/detail_additional_pane"
-                android:layout_margin="@dimen/size_normal"
-                android:background="@color/lightgray"
-                />
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/gray_divider"
-                android:layout_centerHorizontal="true"
-                >
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/btnShowInAndroidDetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/size_micro"
-                    android:text="@string/show_in_android_info"
-                    android:textSize="@dimen/text_size_avg"
-                    app:bb_icon_left="fa-info"
-                    app:bb_icon_right="fa-android"
-                    app:bb_roundedCorners="true"
-                    app:bb_size="small"
-                    app:bb_type="info"
-                    />
-                <com.beardedhen.androidbootstrap.BootstrapButton
-                    android:id="@+id/btnKillCurrentApp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/size_micro"
-                    android:text="@string/kill_app"
-                    android:textSize="@dimen/text_size_avg"
-                    app:bb_icon_left="fa-exclamation"
-                    app:bb_icon_right="fa-close"
-                    app:bb_roundedCorners="true"
-                    app:bb_size="small"
-                    app:bb_type="danger"
-                    />
-            </LinearLayout>
         </RelativeLayout>
     </android.support.v7.widget.CardView>
+
+    <com.github.clans.fab.FloatingActionMenu
+        android:id="@+id/fabMoreInfo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/size_big"
+        android:layout_marginRight="@dimen/size_big"
+        app:menu_icon="@drawable/ic_tool"
+        app:menu_colorNormal="@color/md_green_500"
+        app:menu_colorPressed="@color/md_green_300"
+        app:menu_colorRipple="@color/gray"
+        app:menu_showShadow="false">
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/btnKillCurrentApp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_kill"
+            app:fab_colorPressed="@color/md_green_300"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_label="@string/kill_app"
+            app:fab_showShadow="false"/>
+
+        <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/btnShowInAndroidDetails"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:fab_colorPressed="@color/md_green_300"
+            android:src="@drawable/ic_details"
+            app:fab_colorNormal="@android:color/transparent"
+            app:fab_label="@string/show_in_android_info"
+            app:fab_showShadow="false"/>
+
+
+    </com.github.clans.fab.FloatingActionMenu>
 </RelativeLayout>
