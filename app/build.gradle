@@ -27,9 +27,13 @@ android {
         applicationId "com.dogar.mytaskmanager"
         minSdkVersion 15
         targetSdkVersion 22
+
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
     }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
+        exclude 'LICENSE.txt'
     }
 
     buildTypes {
@@ -71,6 +75,16 @@ dependencies {
     compile 'com.cjj.materialrefeshlayout:library:1.3.0'
     //db
     compile 'io.realm:realm-android:0.82.2'
+    //testing
+    androidTestCompile 'com.android.support.test:runner:0.4'
+    androidTestCompile 'com.android.support.test:rules:0.4'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.2.1'
+    androidTestCompile ('com.android.support.test.espresso:espresso-contrib:2.2'){
+        exclude group: 'com.android.support', module: 'appcompat'
+        exclude group: 'com.android.support', module: 'support-v4'
+        exclude module: 'recyclerview-v7'
+    }
+
     //Other
     compile 'com.jakewharton:butterknife:7.0.1'
     compile 'de.greenrobot:eventbus:2.4.0'
