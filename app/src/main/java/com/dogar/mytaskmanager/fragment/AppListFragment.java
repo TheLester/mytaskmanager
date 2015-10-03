@@ -1,7 +1,9 @@
 package com.dogar.mytaskmanager.fragment;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -10,10 +12,12 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
+import com.dogar.mytaskmanager.Constants;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.di.component.DaggerAppListComponent;
 import com.dogar.mytaskmanager.di.module.ListAppModule;
+import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
@@ -28,11 +32,12 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import de.greenrobot.event.EventBus;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
 import timber.log.Timber;
 
-public class AppListFragment extends BaseFragment implements AppListPresenter.View{
+public class AppListFragment extends BaseFragment implements AppListPresenter.View {
 
 	private static final int REFRESH_ANIM_DELAY_MILLIS = 2000;
 	@Bind(R.id.process_list)   RecyclerView          processList;
@@ -101,10 +106,19 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 			@Override
 			public void run() {
 				try {
+					Bitmap appIcon = Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get();
 					FragmentTransitionLauncher
 							.with(getActivity())
-							.image(Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get())
+							.image(appIcon)
 							.from(iconHolder).prepare(toFragment);
+					new Palette.Builder(appIcon).generate(new Palette.PaletteAsyncListener() {
+						@Override
+						public void onGenerated(Palette palette) {
+							EventBus.getDefault().postSticky(new EventHolder.ColorGeneratedEvent(
+									palette.getVibrantColor(Constants.UNDEFINED_VAL),
+									palette.getDarkVibrantColor(Constants.UNDEFINED_VAL)));
+						}
+					});
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
@@ -143,7 +157,8 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	private int getIconImageSize() {
 		return (int) getResources().getDimension(R.dimen.app_card_icon_size);
 	}
-	private class RefresherListener extends MaterialRefreshListener{
+
+	private class RefresherListener extends MaterialRefreshListener {
 
 		@Override
 		public void onfinish() {

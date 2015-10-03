@@ -10,9 +10,6 @@
     app:wave_show="true"
     >
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
         <!--<com.andexert.expandablelayout.library.ExpandableLayout-->
             <!--android:id="@+id/expandableSystemInfo"-->
@@ -34,5 +31,4 @@
             android:layout_height="match_parent"
             android:background="@color/lightgray"
             android:scrollbars="none"/>
-    </RelativeLayout>
 </com.cjj.MaterialRefreshLayout>

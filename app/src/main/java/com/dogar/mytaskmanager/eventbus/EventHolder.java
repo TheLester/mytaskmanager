@@ -15,4 +15,14 @@ public class EventHolder {
 			this.imageView = imageView;
 		}
 	}
+	public static class ColorGeneratedEvent{
+		public int color;
+		public int darkColor;
+
+		public ColorGeneratedEvent(int color, int darkColor) {
+			this.color = color;
+			this.darkColor = darkColor;
+		}
+	}
+
 }

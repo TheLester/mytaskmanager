@@ -3,6 +3,7 @@ package com.dogar.mytaskmanager.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -15,8 +16,10 @@ import android.view.animation.Interpolator;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.dogar.mytaskmanager.TaskManagerApp;
+import com.dogar.mytaskmanager.Constants;
 import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.TaskManagerApp;
+import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.utils.CommonUtils;
 import com.dogar.mytaskmanager.utils.MemoryUtil;
@@ -30,6 +33,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTransition.ExitListener {
 	public static final String APP_INFO_OBJ  = "app_info";
@@ -73,6 +77,13 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		currentAppInfo = Parcels.unwrap(getArguments().getParcelable(APP_INFO_OBJ));
+		EventBus.getDefault().registerSticky(this);
+	}
+
+	@Override
+	public void onDestroy() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroy();
 	}
 
 	@Override
@@ -99,6 +110,16 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 	public void onFragmentExit() {
 		animateOutInfoPanel();
 		menu.hideMenuButton(true);
+	}
+
+	//eventbus methods
+	public void onEventMainThread(EventHolder.ColorGeneratedEvent event) {
+		if (event.color == Constants.UNDEFINED_VAL || event.darkColor == Constants.UNDEFINED_VAL) {
+			return;
+		}
+		menu.setMenuButtonColorNormal(event.color);
+		menu.setMenuButtonColorPressed(event.darkColor);
+		getToolbar().setBackgroundDrawable(new ColorDrawable(event.color));
 	}
 
 	@OnClick(R.id.btnShowInAndroidDetails)
