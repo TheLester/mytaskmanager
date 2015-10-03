@@ -31,7 +31,7 @@
     <item name="darkgray" type="color">#524937</item>
     <item name="gray" type="color">#a49a91</item>
     <item name="lightgray" type="color">#d7d7c8</item>
-
+    <item name="traspgray" type="color">#57d7d7c8</item>
     <integer-array name="androidcolors">
         <item>@color/blue</item>
         <item>@color/purple</item>

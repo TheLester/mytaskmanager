@@ -1,19 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.cjj.MaterialRefreshLayout
+    android:id="@+id/refresh_layout"
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/refresh_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:overlay="true"
+    app:wave_color="@color/traspgray"
     app:wave_show="true"
-    app:wave_color="@android:color/transparent"
     >
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/process_list"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/lightgray"
-        android:scrollbars="none"/>
+        android:layout_height="match_parent">
+
+        <!--<com.andexert.expandablelayout.library.ExpandableLayout-->
+            <!--android:id="@+id/expandableSystemInfo"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--app:contentLayout="@layout/item_sysinfo_content"-->
+            <!--app:headerLayout="@layout/item_sysinfo_header"/>-->
+
+        <!--<View-->
+            <!--android:id="@+id/shadow"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="3dp"-->
+            <!--android:layout_below="@id/expandableSystemInfo"-->
+            <!--android:background="@drawable/shadow"/>-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/process_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/lightgray"
+            android:scrollbars="none"/>
+    </RelativeLayout>
 </com.cjj.MaterialRefreshLayout>
