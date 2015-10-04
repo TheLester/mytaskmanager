@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,13 +36,19 @@ public abstract class BaseFragment extends Fragment {
 	}
 
 	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+		ButterKnife.unbind(this);
+	}
+
+	@Override
 	public void onDestroy() {
 		super.onDestroy();
 		RefWatcher refWatcher = TaskManagerApp.getRefWatcher(getActivity());
 		refWatcher.watch(this);
 	}
-	protected ActionBar getToolbar(){
-		return ((BaseActivity) getActivity()).getSupportActionBar();
+	protected Toolbar getToolbar(){
+		return ((BaseActivity) getActivity()).getToolbar();
 	}
 	private void injectViews(final View view) {
 		ButterKnife.bind(this, view);

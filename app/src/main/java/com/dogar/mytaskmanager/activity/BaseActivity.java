@@ -14,27 +14,29 @@ import butterknife.Bind;
 import butterknife.ButterKnife;
 
 public class BaseActivity extends AppCompatActivity {
-    @Bind(R.id.toolbar)           Toolbar  toolbar;
-    @Bind(R.id.ramUsageInfoValue) TextView ramUsageLabel;
+	@Bind(R.id.toolbar)           Toolbar  toolbar;
+	@Bind(R.id.ramUsageInfoValue) TextView ramUsageLabel;
 
-    private FragmentManager mFm = getSupportFragmentManager();
+	private FragmentManager mFm = getSupportFragmentManager();
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_base);
-        ButterKnife.bind(this);
-        setupToolbar();
-    }
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_base);
+		ButterKnife.bind(this);
+		setupToolbar();
+	}
+	public Toolbar getToolbar() {
+		return toolbar;
+	}
+	public void goToTop() {
+		mFm.popBackStack(mFm.getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
+	}
 
-    public void goToTop() {
-        mFm.popBackStack(mFm.getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
-    }
-
-    public void changeFragment(Fragment f, boolean addToBackStack, boolean animate, AnimationDirection direction) {
-        if (f == null) {
-            return;
-        }
+	public void changeFragment(Fragment f, boolean addToBackStack, boolean animate, AnimationDirection direction) {
+		if (f == null) {
+			return;
+		}
         FragmentTransaction ft = mFm.beginTransaction();
 
         // Animations
@@ -78,6 +80,7 @@ public class BaseActivity extends AppCompatActivity {
     protected void setupToolbar() {
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 
     }
 

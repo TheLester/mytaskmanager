@@ -32,6 +32,7 @@ import java.util.concurrent.ExecutionException;
 import javax.inject.Inject;
 
 import butterknife.Bind;
+import butterknife.BindColor;
 import de.greenrobot.event.EventBus;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
@@ -48,6 +49,8 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	@Inject AppsListPresenterImpl   appsListPresenter;
 	@Inject ScaleInAnimationAdapter scaleInAnimationAdapter;
 	@Inject FadeInAnimator          fadeInAnimator;
+
+	@BindColor(R.color.md_green_500) int colorGreen;
 
 	private boolean isRefreshing;
 	private List<AppInfo> appInfos = new ArrayList<>();
@@ -86,6 +89,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		getToolbar().setBackgroundColor(colorGreen);
 		refreshLayout.setMaterialRefreshListener(new RefresherListener());
 		processList.setLayoutManager(new LinearLayoutManager(mActivity));
 		processList.setItemAnimator(fadeInAnimator);

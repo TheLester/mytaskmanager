@@ -8,31 +8,35 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="@color/md_green_500">
-        <RelativeLayout android:layout_width="wrap_content"
-                        android:gravity="right"
-                        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="right">
 
             <TextView
                 android:id="@+id/ramUsageInfo"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/size_normal"
-                android:textColor="@color/white"
                 android:text="@string/ram_used"
+                android:textColor="@color/white"
                 android:textSize="16sp"
                 />
+
             <TextView
                 android:id="@+id/ramUsageInfoValue"
-                android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:layout_toRightOf="@id/ramUsageInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_gravity="right"
                 android:layout_marginRight="@dimen/size_normal"
+                android:layout_toRightOf="@id/ramUsageInfo"
                 android:textColor="@color/white"
                 android:textSize="16sp"
                 />
 
         </RelativeLayout>
-
 
     </android.support.v7.widget.Toolbar>
 
@@ -40,5 +44,13 @@
         android:id="@+id/fragmentContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/toolbar"/>
+        android:layout_below="@id/toolbar"/>
+
+    <View
+        android:id="@+id/shadow"
+        android:layout_width="match_parent"
+        android:layout_height="5dp"
+        android:layout_below="@id/toolbar"
+        android:background="@drawable/shadow"
+        />
 </RelativeLayout>

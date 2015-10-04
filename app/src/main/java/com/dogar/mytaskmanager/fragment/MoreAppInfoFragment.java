@@ -3,7 +3,6 @@ package com.dogar.mytaskmanager.fragment;
 import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -119,7 +118,7 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		}
 		menu.setMenuButtonColorNormal(event.color);
 		menu.setMenuButtonColorPressed(event.darkColor);
-		getToolbar().setBackgroundDrawable(new ColorDrawable(event.color));
+		getToolbar().setBackgroundColor(event.color);
 	}
 
 	@OnClick(R.id.btnShowInAndroidDetails)
