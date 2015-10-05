@@ -7,6 +7,8 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 
 import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
@@ -36,6 +38,7 @@ import javax.inject.Inject;
 
 import butterknife.Bind;
 import butterknife.BindColor;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import jp.wasabeef.recyclerview.animators.FadeInAnimator;
 import jp.wasabeef.recyclerview.animators.adapters.ScaleInAnimationAdapter;
@@ -100,6 +103,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
         processList.setItemAnimator(fadeInAnimator);
         processList.setAdapter(scaleInAnimationAdapter);
         slidingUpPanelLayout.setPanelSlideListener(this);
+        slidingUpPanelLayout.setTouchEnabled(false);
         ramProgress.setOnIconClickListener(this);
     }
 
@@ -188,6 +192,12 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
         ToastUtils.show(getActivity(), "bla");
     }
 
+    @OnClick(R.id.progressExpandIcon)
+    protected void expandInfoPanelClicked(View view){
+        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.drawable_rotate);
+        view.startAnimation(animation);
+        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+    }
     private void finishRefreshingWithDelay() {
         refreshLayout.postDelayed(new Runnable() {
             @Override

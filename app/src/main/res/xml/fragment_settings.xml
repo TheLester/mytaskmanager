@@ -7,10 +7,9 @@
         <ListPreference android:defaultValue="1"
                         android:entries="@array/periodArray"
                         android:entryValues="@array/periodValues"
-                        android:key="ram_update"
-                        android:summary="Period of RAM monitor update"
-                        android:title="RAM update"/>
+                        android:key="@string/opt_ram_key"
+                        android:summary="@string/opt_ram_detail"
+                        android:title="@string/opt_ram_title"/>
     </android.support.v7.preference.PreferenceCategory>
-
 
 </android.support.v7.preference.PreferenceScreen>
