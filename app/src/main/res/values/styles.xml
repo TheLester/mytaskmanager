@@ -3,6 +3,7 @@
     <!-- Application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:actionOverflowButtonStyle">@style/CustomOverFlow</item>
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
     </style>
 
     <style name="CustomOverFlow">
@@ -10,5 +11,4 @@
         <item name="android:src">@drawable/ic_sysbar_menu_white</item>
         <item name="android:paddingRight">4dp</item>
     </style>
-
 </resources>

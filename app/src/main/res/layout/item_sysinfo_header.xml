@@ -8,29 +8,42 @@
     android:background="@color/white" android:gravity="center|top">
 
 
-    <ImageView
-        android:id="@+id/expandIcon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/size_normal"
-        android:src="@drawable/down"
-        />
+    <FrameLayout android:layout_width="wrap_content"
+                 android:id="@+id/expandIcon"
+                 android:layout_height="wrap_content"
+                 android:layout_alignBottom="@+id/ramProgress"
+                 android:layout_alignParentRight="true"
+                 android:layout_alignTop="@+id/ramProgress">
+        <ImageView
+            android:id="@+id/progressExpandIcon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="@dimen/size_normal"
+            android:src="@drawable/up"
+            />
+
+    </FrameLayout>
+
 
     <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
+        android:id="@+id/ramProgress"
         android:layout_width="match_parent"
-        android:layout_margin="@dimen/size_micro"
-        android:layout_height="50dp"
-        android:layout_alignParentLeft="true"
         android:layout_toLeftOf="@+id/expandIcon"
-        app:rcIconPadding="@dimen/size_normal"
-        app:rcIconSrc="@drawable/ic_trash"
-        app:rcIconSize="40dp"
+        android:layout_height="46dp"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="@dimen/size_normal"
         app:rcBackgroundColor="@color/gray"
         app:rcBackgroundPadding="4dp"
+        app:rcIconBackgroundColor="@color/darkorange"
+        app:rcIconPadding="@dimen/size_normal"
+        app:rcIconSize="40dp"
+        app:rcIconSrc="@drawable/ic_trash"
         app:rcMax="100"
         app:rcProgress="40"
         app:rcProgressColor="@color/orange"
-        app:rcIconBackgroundColor="@color/darkorange"
+        app:rcRadius="@dimen/size_big"
         />
+
+
 </RelativeLayout>

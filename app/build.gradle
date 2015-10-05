@@ -55,6 +55,7 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0.+'
     compile 'com.android.support:gridlayout-v7:23.0.+'
     compile 'com.android.support:palette-v7:23.0.+'
+    compile 'com.android.support:preference-v7:23.0.+'
     //Logging
     compile 'com.jakewharton.timber:timber:3.1.0'
     //anim

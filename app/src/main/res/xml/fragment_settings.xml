@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.preference.PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.preference.PreferenceCategory
+        android:title="Periods">
+        <ListPreference android:defaultValue="1"
+                        android:entries="@array/periodArray"
+                        android:entryValues="@array/periodValues"
+                        android:key="ram_update"
+                        android:summary="Period of RAM monitor update"
+                        android:title="RAM update"/>
+    </android.support.v7.preference.PreferenceCategory>
+
+
+</android.support.v7.preference.PreferenceScreen>

@@ -19,6 +19,7 @@ public abstract class BaseFragment extends Fragment {
 	protected BaseActivity mActivity;
 	protected View         mRootView;
 
+
 	protected abstract int getLayoutResourceId();
 
 	@Override

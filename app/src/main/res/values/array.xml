@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="periodArray">
+        <item>2 Seconds</item>
+        <item>5 Seconds</item>
+        <item>10 Seconds</item>
+    </string-array>
+    <string-array name="periodValues">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+</resources>
