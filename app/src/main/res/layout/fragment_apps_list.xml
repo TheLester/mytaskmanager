@@ -8,7 +8,7 @@
     android:layout_height="match_parent"
     android:gravity="bottom"
     app:umanoFadeColor="@android:color/transparent"
-    app:umanoPanelHeight="48dp"
+    app:umanoPanelHeight="58dp"
     app:umanoShadowHeight="4dp">
 
     <com.cjj.MaterialRefreshLayout
