@@ -20,7 +20,7 @@
         android:layout_below="@id/imgAppIconInfo"
         android:layout_gravity="center"
         android:layout_margin="@dimen/size_normal"
-        app:cardBackgroundColor="@color/white"
+        app:cardBackgroundColor="@android:color/white"
         app:cardCornerRadius="2dp"
         app:cardElevation="@dimen/size_normal"
         app:contentPadding="@dimen/size_normal">

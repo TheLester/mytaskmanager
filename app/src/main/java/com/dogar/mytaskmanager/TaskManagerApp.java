@@ -3,6 +3,7 @@ package com.dogar.mytaskmanager;
 import android.app.Application;
 import android.content.Context;
 
+import com.beardedhen.androidbootstrap.TypefaceProvider;
 import com.crashlytics.android.Crashlytics;
 import com.dogar.mytaskmanager.di.component.AppComponent;
 import com.dogar.mytaskmanager.di.component.DaggerAppComponent;
@@ -36,6 +37,7 @@ public class TaskManagerApp extends Application {
 		sInstance = this;
 		Timber.plant(new Timber.DebugTree());
 		refWatcher = LeakCanary.install(this);
+		TypefaceProvider.registerDefaultIconSets();
 		initGoogleAnalytics();
 		buildComponentAndInject();
 	}

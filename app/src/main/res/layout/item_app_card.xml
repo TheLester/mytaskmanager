@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:layout_margin="@dimen/size_normal"
-    custom:cardBackgroundColor="@color/white"
+    custom:cardBackgroundColor="@android:color/white"
     custom:cardCornerRadius="2dp"
     custom:cardElevation="@dimen/size_normal"
     custom:contentPadding="@dimen/size_normal">
@@ -86,12 +86,11 @@
             android:layout_below="@id/processIcon"
             android:layout_marginTop="@dimen/size_normal"
             android:layout_centerHorizontal="true"
-            android:text="@string/more_info"
             android:textSize="@dimen/text_size_avg"
-            custom:bb_icon_right="fa-arrow-circle-right"
-            custom:bb_roundedCorners="true"
-            custom:bb_size="xsmall"
-            custom:bb_type="success"
+            custom:bootstrapText="@string/more_info"
+            custom:roundedCorners="true"
+            custom:bootstrapSize="lg"
+            custom:bootstrapBrand="success"
             />
     </RelativeLayout>
 </android.support.v7.widget.CardView>
