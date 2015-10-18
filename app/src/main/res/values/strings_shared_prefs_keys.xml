@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string name="opt_ram_key">ram_update</string>
+    <string name="opt_ram_key">ram_update</string>
 </resources>

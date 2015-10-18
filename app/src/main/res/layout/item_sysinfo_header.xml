@@ -40,7 +40,6 @@
         app:rcIconSize="40dp"
         app:rcIconSrc="@drawable/ic_trash"
         app:rcMax="100"
-        app:rcProgress="40"
         app:rcProgressColor="@color/orange"
         app:rcRadius="@dimen/size_big"
         />

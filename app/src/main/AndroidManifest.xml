@@ -43,6 +43,8 @@
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="13d9f70d944de486d25723af4b398737782052f2"/>
+
+        <service android:name="com.dogar.mytaskmanager.service.CalculateRamService" />
     </application>
     <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
      dispatching on non-Google Play devices -->

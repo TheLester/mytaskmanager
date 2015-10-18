@@ -24,5 +24,11 @@ public class EventHolder {
 			this.darkColor = darkColor;
 		}
 	}
+	public static class RamUpdateEvent{
+		public long memoryUsed;
 
+		public RamUpdateEvent(long memoryUsed) {
+			this.memoryUsed = memoryUsed;
+		}
+	}
 }

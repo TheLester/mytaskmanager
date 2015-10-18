@@ -42,7 +42,6 @@ public class AppsListPresenterImpl implements AppListPresenter {
 	@Inject ActivityManager activityManager;
 	@Inject Context         context;
 
-
 	public AppsListPresenterImpl(View mView) {
 		this.mView = mView;
 		TaskManagerApp.getInstance().component().inject(this);
@@ -62,7 +61,9 @@ public class AppsListPresenterImpl implements AppListPresenter {
 
 	public void onEvent(EventHolder.MoreAppInfoRequestedEvent event) {
 		mView.onLoadAppMoreInfo(event.appInfo, event.imageView);
-
+	}
+	public void onEventMainThread(EventHolder.RamUpdateEvent event) {
+		mView.onNewRamInfo(event.memoryUsed);
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package com.dogar.mytaskmanager.fragment;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -46,186 +47,203 @@ import timber.log.Timber;
 
 public class AppListFragment extends BaseFragment implements AppListPresenter.View, SlidingUpPanelLayout.PanelSlideListener, IconRoundCornerProgressBar.OnIconClickListener {
 
-    private static final int REFRESH_ANIM_DELAY_MILLIS = 2000;
-    @Bind(R.id.process_list)       RecyclerView               processList;
-    @Bind(R.id.refresh_layout)     MaterialRefreshLayout      refreshLayout;
-    @Bind(R.id.sliding_layout)     SlidingUpPanelLayout       slidingUpPanelLayout;
-    @Bind(R.id.progressExpandIcon) ImageView                  progressExpandIcon;
-    @Bind(R.id.ramProgress)        IconRoundCornerProgressBar ramProgress;
+	private static final int REFRESH_ANIM_DELAY_MILLIS = 2000;
+	@Bind(R.id.process_list)       RecyclerView               processList;
+	@Bind(R.id.refresh_layout)     MaterialRefreshLayout      refreshLayout;
+	@Bind(R.id.sliding_layout)     SlidingUpPanelLayout       slidingUpPanelLayout;
+	@Bind(R.id.progressExpandIcon) ImageView                  progressExpandIcon;
+	@Bind(R.id.ramProgress)        IconRoundCornerProgressBar ramProgress;
 
-    @Inject TasksAdapter            myTasksAdapter;
-    @Inject AppsListPresenterImpl   appsListPresenter;
-    @Inject ScaleInAnimationAdapter scaleInAnimationAdapter;
-    @Inject FadeInAnimator          fadeInAnimator;
+	@Inject TasksAdapter            myTasksAdapter;
+	@Inject AppsListPresenterImpl   appsListPresenter;
+	@Inject ScaleInAnimationAdapter scaleInAnimationAdapter;
+	@Inject FadeInAnimator          fadeInAnimator;
+	@Inject Intent                  calculateRamIntent;
 
-    @BindColor(R.color.md_green_500) int colorGreen;
+	@BindColor(R.color.md_green_500) int colorGreen;
 
-    private boolean isRefreshing;
-    private List<AppInfo> appInfos = new ArrayList<>();
+	private boolean isRefreshing;
+	private List<AppInfo> appInfos = new ArrayList<>();
 
-    public static Fragment newInstance() {
-        return new AppListFragment();
-    }
+	public static Fragment newInstance() {
+		return new AppListFragment();
+	}
 
-    protected int getLayoutResourceId() {
-        return R.layout.fragment_apps_list;
-    }
+	protected int getLayoutResourceId() {
+		return R.layout.fragment_apps_list;
+	}
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        appsListPresenter.onStart();
-    }
+	@Override
+	public void onStart() {
+		super.onStart();
+		appsListPresenter.onStart();
+		getActivity().startService(calculateRamIntent);
+	}
 
-    @Override
-    public void onStop() {
-        appsListPresenter.onStop();
-        super.onStop();
-    }
+	@Override
+	public void onStop() {
+		getActivity().stopService(calculateRamIntent);
+		appsListPresenter.onStop();
+		super.onStop();
+	}
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		DaggerAppListComponent.builder()
+				.listAppModule(new ListAppModule(this, getActivity(), appInfos))
+				.build()
+				.inject(this);
 
-        DaggerAppListComponent.builder()
-                .listAppModule(new ListAppModule(this, getActivity(), appInfos))
-                .build()
-                .inject(this);
+		appsListPresenter.loadAppList();
+	}
 
-        appsListPresenter.loadAppList();
-    }
-
-    @Override
-    public void onViewCreated(View view, Bundle savedInstanceState) {
-        getToolbar().setBackgroundColor(colorGreen);
-        refreshLayout.setMaterialRefreshListener(new RefresherListener());
-        processList.setLayoutManager(new LinearLayoutManager(mActivity));
-        processList.setItemAnimator(fadeInAnimator);
-        processList.setAdapter(scaleInAnimationAdapter);
-        slidingUpPanelLayout.setPanelSlideListener(this);
-        slidingUpPanelLayout.setTouchEnabled(false);
-        ramProgress.setOnIconClickListener(this);
-    }
-
-
-    @Override
-    public void showProgress(boolean show) {
-
-    }
-
-    @Override
-    public void onLoadAppMoreInfo(final AppInfo app, final ImageView iconHolder) {
-        final MoreAppInfoFragment toFragment = MoreAppInfoFragment.newInstance();
-        final int iconSize = getIconImageSize();
-        new Thread() {
-            @Override
-            public void run() {
-                try {
-                    Bitmap appIcon = Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get();
-                    FragmentTransitionLauncher
-                            .with(getActivity())
-                            .image(appIcon)
-                            .from(iconHolder).prepare(toFragment);
-
-                    new Palette.Builder(appIcon).generate(new Palette.PaletteAsyncListener() {
-                        @Override
-                        public void onGenerated(Palette palette) {
-                            EventBus.getDefault().postSticky(new EventHolder.ColorGeneratedEvent(
-                                    palette.getVibrantColor(Constants.UNDEFINED_VAL),
-                                    palette.getDarkVibrantColor(Constants.UNDEFINED_VAL)));
-                        }
-                    });
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                }
-                toFragment.getArguments().putParcelable(MoreAppInfoFragment.APP_INFO_OBJ, Parcels.wrap(app));
-                getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, toFragment).addToBackStack(null).commit();
-            }
-        }.start();
-    }
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		getToolbar().setBackgroundColor(colorGreen);
+		refreshLayout.setMaterialRefreshListener(new RefresherListener());
+		processList.setLayoutManager(new LinearLayoutManager(mActivity));
+		processList.setItemAnimator(fadeInAnimator);
+		processList.setAdapter(scaleInAnimationAdapter);
+		slidingUpPanelLayout.setPanelSlideListener(this);
+		slidingUpPanelLayout.setTouchEnabled(false);
+		ramProgress.setOnIconClickListener(this);
+	}
 
 
-    @Override
-    public void onAppListLoaded(List<AppInfo> runningApps) {
-        if (!runningApps.isEmpty()) {
-            appInfos.clear();
-            appInfos.addAll(runningApps);
-            if (isRefreshing) {
-                finishRefreshingWithDelay();
-            } else {
-                scaleInAnimationAdapter.notifyDataSetChanged();
-            }
-        }
-        Timber.i("Done!");
-    }
-    @Override
-    public void onPanelSlide(View panel, float slideOffset) {
+	@Override
+	public void showProgress(boolean show) {
 
-    }
+	}
 
-    @Override
-    public void onPanelCollapsed(View panel) {
-        progressExpandIcon.setImageResource(R.drawable.up);
-    }
+	@Override
+	public void onLoadAppMoreInfo(final AppInfo app, final ImageView iconHolder) {
+		final MoreAppInfoFragment toFragment = MoreAppInfoFragment.newInstance();
+		final int iconSize = getIconImageSize();
+		new Thread() {
+			@Override
+			public void run() {
+				try {
+					Bitmap appIcon = Glide.with(getActivity()).load(app.getIcon()).asBitmap().into(iconSize, iconSize).get();
+					FragmentTransitionLauncher
+							.with(getActivity())
+							.image(appIcon)
+							.from(iconHolder).prepare(toFragment);
 
-    @Override
-    public void onPanelExpanded(View panel) {
-        progressExpandIcon.setImageResource(R.drawable.down);
-    }
-
-    @Override
-    public void onPanelAnchored(View panel) {
-
-    }
-
-    @Override
-    public void onPanelHidden(View panel) {
-    }
-
-    /**
-     * On trim memory click
-     */
-    @Override
-    public void onIconClick() {
-        ToastUtils.show(getActivity(), "bla");
-    }
-
-    @OnClick(R.id.progressExpandIcon)
-    protected void expandInfoPanelClicked(View view){
-        Animation animation = AnimationUtils.loadAnimation(getActivity(), R.anim.drawable_rotate);
-        view.startAnimation(animation);
-        slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-    }
-    private void finishRefreshingWithDelay() {
-        refreshLayout.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                refreshLayout.finishRefreshing();
-            }
-        }, REFRESH_ANIM_DELAY_MILLIS);
-    }
-
-    private int getIconImageSize() {
-        return (int) getResources().getDimension(R.dimen.app_card_icon_size);
-    }
+					new Palette.Builder(appIcon).generate(new Palette.PaletteAsyncListener() {
+						@Override
+						public void onGenerated(Palette palette) {
+							EventBus.getDefault().postSticky(new EventHolder.ColorGeneratedEvent(
+									palette.getVibrantColor(Constants.UNDEFINED_VAL),
+									palette.getDarkVibrantColor(Constants.UNDEFINED_VAL)));
+						}
+					});
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
+				toFragment.getArguments().putParcelable(MoreAppInfoFragment.APP_INFO_OBJ, Parcels.wrap(app));
+				getFragmentManager().beginTransaction().replace(R.id.fragmentContainer, toFragment).addToBackStack(null).commit();
+			}
+		}.start();
+	}
 
 
-    private class RefresherListener extends MaterialRefreshListener {
+	@Override
+	public void onAppListLoaded(List<AppInfo> runningApps) {
+		if (!runningApps.isEmpty()) {
+			appInfos.clear();
+			appInfos.addAll(runningApps);
+			if (isRefreshing) {
+				finishRefreshingWithDelay();
+			} else {
+				scaleInAnimationAdapter.notifyDataSetChanged();
+			}
+		}
+		Timber.i("Done!");
+	}
 
-        @Override
-        public void onfinish() {
-            isRefreshing = false;
-            scaleInAnimationAdapter.notifyDataSetChanged();
-            Timber.i("Complete refresh!");
-        }
+	@Override
+	public void onNewRamInfo(long memoryUsed) {
+		Timber.i("Get ram info -"+memoryUsed+"%");
+		ramProgress.setProgress(memoryUsed);
+	}
 
-        @Override
-        public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
-            Timber.i("Refreshing ...");
-            isRefreshing = true;
-            appsListPresenter.reloadAppList();
-        }
-    }
+	@Override
+	public void onPanelSlide(View panel, float slideOffset) {
+
+	}
+
+	@Override
+	public void onPanelCollapsed(View panel) {
+
+	}
+
+	@Override
+	public void onPanelExpanded(View panel) {
+	}
+
+	@Override
+	public void onPanelAnchored(View panel) {
+
+	}
+
+	@Override
+	public void onPanelHidden(View panel) {
+	}
+
+	/**
+	 * On trim memory click
+	 */
+	@Override
+	public void onIconClick() {
+		ToastUtils.show(getActivity(), "bla");
+	}
+
+	@OnClick(R.id.progressExpandIcon)
+	protected void expandInfoPanelClicked(ImageView view) {
+		Animation animation = null;
+		if (slidingUpPanelLayout.getPanelState().equals(SlidingUpPanelLayout.PanelState.EXPANDED)) {
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
+			animation = AnimationUtils.loadAnimation(getActivity(), R.anim.drawable_rotate_down);
+		} else {
+			slidingUpPanelLayout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+			animation = AnimationUtils.loadAnimation(getActivity(), R.anim.drawable_rotate_up);
+		}
+		view.startAnimation(animation);
+
+
+	}
+
+	private void finishRefreshingWithDelay() {
+		refreshLayout.postDelayed(new Runnable() {
+			@Override
+			public void run() {
+				refreshLayout.finishRefreshing();
+			}
+		}, REFRESH_ANIM_DELAY_MILLIS);
+	}
+
+	private int getIconImageSize() {
+		return (int) getResources().getDimension(R.dimen.app_card_icon_size);
+	}
+
+
+	private class RefresherListener extends MaterialRefreshListener {
+
+		@Override
+		public void onfinish() {
+			isRefreshing = false;
+			scaleInAnimationAdapter.notifyDataSetChanged();
+			Timber.i("Complete refresh!");
+		}
+
+		@Override
+		public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
+			Timber.i("Refreshing ...");
+			isRefreshing = true;
+			appsListPresenter.reloadAppList();
+		}
+	}
 }

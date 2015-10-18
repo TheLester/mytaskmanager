@@ -1,11 +1,13 @@
 package com.dogar.mytaskmanager.di.module;
 
 import android.content.Context;
+import android.content.Intent;
 
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
+import com.dogar.mytaskmanager.service.CalculateRamService;
 
 import java.util.List;
 
@@ -53,5 +55,9 @@ public class ListAppModule {
 	@Provides
 	public AppsListPresenterImpl provideAppListPresenter() {
 		return new AppsListPresenterImpl(appListView);
+	}
+	@Provides
+	public Intent provideUpdateRamIntent() {
+		return new Intent(context, CalculateRamService.class);
 	}
 }

@@ -3,7 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <android.support.v7.preference.PreferenceCategory
-        android:title="Periods">
+        android:title="Update frequency">
         <ListPreference android:defaultValue="1"
                         android:entries="@array/periodArray"
                         android:entryValues="@array/periodValues"

@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="periodArray">
+        <item>1 Second</item>
         <item>2 Seconds</item>
         <item>5 Seconds</item>
         <item>10 Seconds</item>
     </string-array>
     <string-array name="periodValues">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
+        <item>1000</item>
+        <item>2000</item>
+        <item>5000</item>
+        <item>10000</item>
     </string-array>
 </resources>

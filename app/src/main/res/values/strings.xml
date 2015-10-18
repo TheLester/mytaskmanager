@@ -26,5 +26,5 @@
     <string name="ram_used">RAM available:&#160;</string>
 
     <string name="opt_ram_title">RAM update</string>
-    <string name="opt_ram_detail">Period of RAM monitor update</string>
+    <string name="opt_ram_detail">Period in sec for used RAM progress updating</string>
 </resources>

@@ -3,7 +3,6 @@ package com.dogar.mytaskmanager.di.module;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Handler;
 
 import com.dogar.mytaskmanager.TaskManagerApp;
 
@@ -26,11 +25,6 @@ public class AppModule {
 	@Provides
 	public Context provideContext() {
 		return TaskManagerApp.getInstance().getApplicationContext();
-	}
-
-	@Provides
-	public Handler provideHandler() {
-		return new Handler();
 	}
 
 }

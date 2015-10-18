@@ -14,6 +14,7 @@ public interface AppListPresenter extends BasePresenter{
 
     interface View extends BaseView{
         void onAppListLoaded(List<AppInfo> runningApps);
-        void onLoadAppMoreInfo(AppInfo app,ImageView iconHolder);
+		void onNewRamInfo(long memoryUsed);
+		void onLoadAppMoreInfo(AppInfo app,ImageView iconHolder);
     }
 }
