@@ -17,6 +17,7 @@ import timber.log.Timber;
 
 public class CalculateRamService extends IntentService {
 	private static final String DEF_FREQUENCY = "1000";
+	private boolean isCalculating;
 
 	@Inject ActivityManager activityManager;
 
@@ -35,14 +36,21 @@ public class CalculateRamService extends IntentService {
 	}
 
 	@Override
+	public void onDestroy() {
+		isCalculating = false;
+		super.onDestroy();
+	}
+
+	@Override
 	protected void onHandleIntent(Intent intent) {
+		isCalculating = true;
 		calculateRam();
 	}
 
 	private void calculateRam() {
 		EventHolder.RamUpdateEvent event = new EventHolder.RamUpdateEvent(0);
 		long frequency = getFrequency();
-		while (true) {
+		while (isCalculating) {
 			ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
 			activityManager.getMemoryInfo(memoryInfo);
 			long availableKbs = memoryInfo.availMem / 1048L;
@@ -60,9 +68,9 @@ public class CalculateRamService extends IntentService {
 		}
 	}
 
-	public long getFrequency() {
+	private long getFrequency() {
 		String frequencyInMs = PreferenceManager.getDefaultSharedPreferences(this).getString(getString(R.string.opt_ram_key), DEF_FREQUENCY);
-		Timber.i("freq = "+frequencyInMs);
+		Timber.i("freq = " + frequencyInMs);
 		return Long.parseLong(frequencyInMs);
 	}
 }

@@ -74,17 +74,19 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	}
 
 	@Override
-	public void onStart() {
-		super.onStart();
-		appsListPresenter.onStart();
+	public void onResume() {
+		super.onResume();
+		Timber.i("resume");
+		appsListPresenter.onResume();
 		getActivity().startService(calculateRamIntent);
 	}
 
 	@Override
-	public void onStop() {
+	public void onPause() {
+		Timber.i("pause");
 		getActivity().stopService(calculateRamIntent);
-		appsListPresenter.onStop();
-		super.onStop();
+		appsListPresenter.onPause();
+		super.onPause();
 	}
 
 	@Override
@@ -166,7 +168,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 
 	@Override
 	public void onNewRamInfo(long memoryUsed) {
-		Timber.i("Get ram info -"+memoryUsed+"%");
+		Timber.i("Get ram info -" + memoryUsed + "%");
 		ramProgress.setProgress(memoryUsed);
 	}
 

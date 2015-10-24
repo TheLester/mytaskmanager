@@ -50,12 +50,12 @@ public class AppsListPresenterImpl implements AppListPresenter {
 	}
 
 	@Override
-	public void onStart() {
+	public void onResume() {
 		EventBus.getDefault().register(this);
 	}
 
 	@Override
-	public void onStop() {
+	public void onPause() {
 		EventBus.getDefault().unregister(this);
 	}
 
