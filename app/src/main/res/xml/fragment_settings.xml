@@ -4,7 +4,7 @@
 
     <android.support.v7.preference.PreferenceCategory
         android:title="Update frequency">
-        <ListPreference android:defaultValue="1"
+        <ListPreference android:defaultValue="1000"
                         android:entries="@array/periodArray"
                         android:entryValues="@array/periodValues"
                         android:key="@string/opt_ram_key"

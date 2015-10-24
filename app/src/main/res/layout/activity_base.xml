@@ -1,39 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+
+                xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        app:popupTheme="@style/Theme.AppCompat.Light.NoActionBar"
         android:background="@color/md_green_500">
 
         <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="right">
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/ramUsageInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right"
                 android:layout_marginRight="@dimen/size_normal"
-                android:text="@string/ram_used"
+                android:text="@string/app_name"
                 android:textColor="@color/@android:color/white"
                 android:textSize="16sp"
-                />
-
-            <TextView
-                android:id="@+id/ramUsageInfoValue"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right"
-                android:layout_marginRight="@dimen/size_normal"
-                android:layout_toRightOf="@id/ramUsageInfo"
-                android:textColor="@color/@android:color/white"
-                android:textSize="16sp"
+                android:ellipsize="marquee"
+                fontPath="fonts/PoetsenOne-Regular.ttf"
                 />
 
         </RelativeLayout>

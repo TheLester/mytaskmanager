@@ -1,21 +1,22 @@
 package com.dogar.mytaskmanager.activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.widget.TextView;
+import android.view.View;
 
 import com.dogar.mytaskmanager.R;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 public class BaseActivity extends AppCompatActivity {
 	@Bind(R.id.toolbar)           Toolbar  toolbar;
-	@Bind(R.id.ramUsageInfoValue) TextView ramUsageLabel;
 
 	private FragmentManager mFm = getSupportFragmentManager();
 
@@ -26,9 +27,14 @@ public class BaseActivity extends AppCompatActivity {
 		ButterKnife.bind(this);
 		setupToolbar();
 	}
+	@Override
+	protected void attachBaseContext(Context newBase) {
+		super.attachBaseContext(CalligraphyContextWrapper.wrap(newBase));
+	}
 	public Toolbar getToolbar() {
 		return toolbar;
 	}
+
 	public void goToTop() {
 		mFm.popBackStack(mFm.getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
@@ -73,15 +79,20 @@ public class BaseActivity extends AppCompatActivity {
         }
         ft.add(R.id.fragmentContainer, f);
 
-        // Commit transaction
+		// Commit transaction
         ft.commit();
     }
 
     protected void setupToolbar() {
         setSupportActionBar(toolbar);
-        getSupportActionBar().setHomeButtonEnabled(false);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
 
+			}
+		});
+		getSupportActionBar().setHomeButtonEnabled(false);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
     }
 
     protected enum AnimationDirection {

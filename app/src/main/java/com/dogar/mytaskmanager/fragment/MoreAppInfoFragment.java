@@ -95,6 +95,7 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		fillViews();
 		showMenuButton();
 		animateInInfoPanel();
+		setNavigationModeOn();
 	}
 
 	private void showMenuButton() {

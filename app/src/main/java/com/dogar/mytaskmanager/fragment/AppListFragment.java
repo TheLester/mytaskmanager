@@ -110,6 +110,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		slidingUpPanelLayout.setPanelSlideListener(this);
 		slidingUpPanelLayout.setTouchEnabled(false);
 		ramProgress.setOnIconClickListener(this);
+		setNavigationModeOff();
 	}
 
 

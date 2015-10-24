@@ -16,6 +16,7 @@ import io.fabric.sdk.android.Fabric;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import timber.log.Timber;
+import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 
 public class TaskManagerApp extends Application {
 	public static GoogleAnalytics analytics;
@@ -40,6 +41,7 @@ public class TaskManagerApp extends Application {
 		TypefaceProvider.registerDefaultIconSets();
 		initGoogleAnalytics();
 		buildComponentAndInject();
+		initFonts();
 	}
 
 	private void initGoogleAnalytics() {
@@ -68,4 +70,11 @@ public class TaskManagerApp extends Application {
 		TaskManagerApp application = (TaskManagerApp) context.getApplicationContext();
 		return application.refWatcher;
 	}
+	private void initFonts() {
+		CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
+				.setDefaultFontPath("fonts/HermeneusOne-Regular.ttf")
+				.setFontAttrId(R.attr.fontPath)
+				.build());
+	}
+
 }
