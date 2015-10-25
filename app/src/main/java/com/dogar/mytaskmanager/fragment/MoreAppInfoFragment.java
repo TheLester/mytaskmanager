@@ -7,8 +7,10 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -36,7 +38,8 @@ import de.greenrobot.event.EventBus;
 
 public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTransition.ExitListener {
 	public static final String APP_INFO_OBJ  = "app_info";
-	public static final int    ANIM_DURATION = 1000;
+	private static final int    ANIM_DURATION = 1000;
+	private static final String SETTINGS_INTENT = "android.settings.APPLICATION_DETAILS_SETTINGS";
 
 	@Bind(R.id.imgAppIconInfo)
 	ImageView          appIcon;
@@ -95,7 +98,7 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		fillViews();
 		showMenuButton();
 		animateInInfoPanel();
-		setNavigationModeOn();
+		setNavigationModeOn(currentAppInfo.getTaskName());
 	}
 
 	private void showMenuButton() {
@@ -121,11 +124,15 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		menu.setMenuButtonColorPressed(event.darkColor);
 		getToolbar().setBackgroundColor(event.color);
 	}
-
+	public void onEvent(EventHolder.BackPressedEvent event){
+		FragmentActivity activity = getActivity();
+		activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
+		activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
+	}
 	@OnClick(R.id.btnShowInAndroidDetails)
 	protected void showInAndroidDetails() {
 		Intent appInfoIntent = new Intent();
-		appInfoIntent.setAction("android.settings.APPLICATION_DETAILS_SETTINGS");
+		appInfoIntent.setAction(SETTINGS_INTENT);
 		appInfoIntent.setData(Uri.fromParts("package", currentAppInfo.getPackageName(), null));
 		startActivity(appInfoIntent);
 	}

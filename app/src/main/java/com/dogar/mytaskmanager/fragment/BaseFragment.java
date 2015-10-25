@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.activity.BaseActivity;
 import com.squareup.leakcanary.RefWatcher;
@@ -52,15 +53,24 @@ public abstract class BaseFragment extends Fragment {
 	protected Toolbar getToolbar(){
 		return ((BaseActivity) getActivity()).getToolbar();
 	}
-	protected void setNavigationModeOn(){
-		ActionBar actionBar = ((BaseActivity) getActivity()).getSupportActionBar();
+	protected void setNavigationModeOn(String title){
+		BaseActivity baseActivity = (BaseActivity) getActivity();
+		ActionBar actionBar = baseActivity.getSupportActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 		actionBar.setHomeButtonEnabled(true);
+		baseActivity.setTitle(title);
+		baseActivity.setShowMenu(false);
+		baseActivity.invalidateOptionsMenu();
+
 	}
 	protected void setNavigationModeOff(){
-		ActionBar actionBar = ((BaseActivity) getActivity()).getSupportActionBar();
+		BaseActivity baseActivity = (BaseActivity) getActivity();
+		ActionBar actionBar = baseActivity.getSupportActionBar();
 		actionBar.setHomeButtonEnabled(false);
 		actionBar.setDisplayHomeAsUpEnabled(false);
+		baseActivity.setTitle(getString(R.string.app_name));
+		baseActivity.setShowMenu(true);
+		baseActivity.invalidateOptionsMenu();
 	}
 
 	private void injectViews(final View view) {

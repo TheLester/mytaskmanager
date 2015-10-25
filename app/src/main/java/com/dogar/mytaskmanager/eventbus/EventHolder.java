@@ -31,4 +31,6 @@ public class EventHolder {
 			this.memoryUsed = memoryUsed;
 		}
 	}
+
+	public static class BackPressedEvent{}
 }
