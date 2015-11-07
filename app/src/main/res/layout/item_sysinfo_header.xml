@@ -4,16 +4,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="200dp"
-    android:background="@android:color/white" android:gravity="center|top">
+    android:layout_height="100dp"
+    android:background="@android:color/white"
+    android:gravity="center|top">
 
 
-    <FrameLayout android:layout_width="wrap_content"
-                 android:id="@+id/expandIcon"
-                 android:layout_height="wrap_content"
-                 android:layout_alignBottom="@+id/ramProgress"
-                 android:layout_alignParentRight="true"
-                 android:layout_alignTop="@+id/ramProgress">
+    <FrameLayout
+        android:id="@+id/expandIcon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/ramProgress"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/ramProgress">
+
         <ImageView
             android:id="@+id/progressExpandIcon"
             android:layout_width="wrap_content"
@@ -29,10 +32,10 @@
     <com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar
         android:id="@+id/ramProgress"
         android:layout_width="match_parent"
-        android:layout_toLeftOf="@+id/expandIcon"
         android:layout_height="46dp"
         android:layout_alignParentLeft="true"
         android:layout_margin="@dimen/size_normal"
+        android:layout_toLeftOf="@+id/expandIcon"
         app:rcBackgroundColor="@color/gray"
         app:rcBackgroundPadding="4dp"
         app:rcIconBackgroundColor="@color/darkorange"
@@ -44,5 +47,15 @@
         app:rcRadius="@dimen/size_big"
         />
 
+    <TextView
+        android:id="@+id/ram_text_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ramProgress"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/size_normal"
+        android:gravity="center"
+        android:textStyle="bold"
+        />
 
 </RelativeLayout>

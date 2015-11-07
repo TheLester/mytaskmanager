@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_normal"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="@dimen/size_normal"
+    app:contentPadding="@dimen/size_normal">
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.GridLayout
+            android:id="@+id/detail_additional_pane"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:padding="@dimen/size_normal"
+            app:columnCount="2">
+
+            <TextView
+                android:id="@+id/osVersionInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/os_version"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                />
+
+            <TextView
+                android:id="@+id/osVersionInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"
+                />
+
+            <TextView
+                android:id="@+id/releaseInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/release"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/releaseInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/deviceInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/device"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/deviceInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/modelInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/model"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/modelInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/productInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/product"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/productInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/brandInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/brand"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/brandInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/displayInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/display"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/displayInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/hardwareInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/hardware"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/hardwareInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/manufacturerInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/manufacturer"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/manufacturerInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/serialInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/serial"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/serialInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/userInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/user"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/userInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+
+            <TextView
+                android:id="@+id/hostInfoRow"
+                android:layout_marginTop="@dimen/size_normal"
+                android:fontFamily="sans-serif"
+                android:gravity="center_vertical"
+                android:text="@string/host"
+                android:textColor="@color/darkgray"
+                app:layout_gravity="fill"
+                app:layout_rowWeight="1"/>
+
+            <TextView
+                android:id="@+id/hostInfo"
+                android:layout_marginLeft="@dimen/size_micro"
+                android:layout_marginTop="@dimen/size_normal"
+                android:gravity="center_vertical"
+                android:textColor="@color/gray"
+                app:layout_gravity="fill"/>
+        </android.support.v7.widget.GridLayout>
+    </ScrollView>
+</android.support.v7.widget.CardView>

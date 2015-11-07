@@ -11,10 +11,12 @@ import java.util.List;
 public interface AppListPresenter extends BasePresenter{
     void loadAppList();
     void reloadAppList();
+	void killApps();
 
     interface View extends BaseView{
         void onAppListLoaded(List<AppInfo> runningApps);
-		void onNewRamInfo(long memoryUsed);
+		void onNewRamInfo(long memoryUsedPercent,long memoryUsed);
 		void onLoadAppMoreInfo(AppInfo app,ImageView iconHolder);
+		void onAppKilled(String packageName);
     }
 }

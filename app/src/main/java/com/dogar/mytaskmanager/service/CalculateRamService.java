@@ -5,6 +5,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.support.v7.preference.PreferenceManager;
 
+import com.dogar.mytaskmanager.Constants;
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
@@ -53,12 +54,12 @@ public class CalculateRamService extends IntentService {
 		while (isCalculating) {
 			ActivityManager.MemoryInfo memoryInfo = new ActivityManager.MemoryInfo();
 			activityManager.getMemoryInfo(memoryInfo);
-			long availableKbs = memoryInfo.availMem / 1048L;
+			long availableKbs = memoryInfo.availMem / Constants.KILOBYTE;
 			long totalRam = MemoryUtil.getTotalRAMinKb();
-
 			long used = totalRam - availableKbs;
+			event.memoryUsed = used / Constants.KILOBYTE;
 			long usedPercent = used / (totalRam / 100);
-			event.memoryUsed = usedPercent;
+			event.memoryUsedPercent = usedPercent;
 			try {
 				Thread.sleep(frequency);
 			} catch (InterruptedException e) {

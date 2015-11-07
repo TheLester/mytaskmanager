@@ -17,6 +17,10 @@
                 android:title="@string/action_deselect_all"
                 app:showAsAction="never"/>
             <item
+                android:id="@+id/systemInfo"
+                android:title="@string/action_system_info"
+                app:showAsAction="never"/>
+            <item
                 android:id="@+id/settings"
                 android:title="@string/action_settings"
                 app:showAsAction="never"/>

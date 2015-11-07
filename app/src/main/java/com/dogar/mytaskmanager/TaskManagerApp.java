@@ -31,12 +31,17 @@ public class TaskManagerApp extends Application {
 		return sInstance;
 	}
 
+	public static Tracker getTracker() {
+		return tracker;
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		Fabric.with(this, new Crashlytics());
 		sInstance = this;
-		Timber.plant(new Timber.DebugTree());
+//		Timber.plant(new Timber.DebugTree());
+		Timber.uprootAll();
 		refWatcher = LeakCanary.install(this);
 		TypefaceProvider.registerDefaultIconSets();
 		initGoogleAnalytics();
@@ -47,7 +52,6 @@ public class TaskManagerApp extends Application {
 	private void initGoogleAnalytics() {
 		analytics = GoogleAnalytics.getInstance(this);
 		tracker = analytics.newTracker(R.xml.app_tracker);
-		analytics.enableAutoActivityReports(this);
 	}
 
 	public void buildComponentAndInject() {

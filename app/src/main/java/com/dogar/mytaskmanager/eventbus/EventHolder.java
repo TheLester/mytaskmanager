@@ -25,12 +25,28 @@ public class EventHolder {
 		}
 	}
 	public static class RamUpdateEvent{
+		public long memoryUsedPercent;
 		public long memoryUsed;
-
-		public RamUpdateEvent(long memoryUsed) {
-			this.memoryUsed = memoryUsed;
+		public RamUpdateEvent(long memoryUsedPercent) {
+			this.memoryUsedPercent = memoryUsedPercent;
 		}
 	}
 
-	public static class BackPressedEvent{}
+	public static class BackPressedEvent {
+	}
+
+	public static class SelectAllAppsEvent {
+	}
+
+	public static class DeselectAllAppsEvent {
+	}
+
+	public static class AppKilledEvent {
+		public String packageName;
+
+		public AppKilledEvent(String packageName) {
+			this.packageName = packageName;
+		}
+	}
+
 }

@@ -55,7 +55,11 @@ public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
                 .centerCrop()
                 .crossFade()
                 .into(holder.appIcon);
-
+		if(appInfo.isCurrentApp()){
+			holder.cbAppChecked.setVisibility(View.GONE);
+		}else{
+			holder.cbAppChecked.setVisibility(View.VISIBLE);
+		}
     }
 
     @Override

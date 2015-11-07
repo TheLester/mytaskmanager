@@ -28,4 +28,18 @@
 
     <string name="opt_ram_title">RAM update</string>
     <string name="opt_ram_detail">Period in sec for used RAM progress updating</string>
+    <string name="cant_kill_this">You can\'t kill this app</string>
+    <string name="action_system_info">System info</string>
+    <string name="os_version">Os version</string>
+    <string name="release">Release</string>
+    <string name="device">Device</string>
+    <string name="model">Model</string>
+    <string name="product">Product</string>
+    <string name="brand">Brand</string>
+    <string name="display">Display</string>
+    <string name="hardware">Hardware</string>
+    <string name="manufacturer">Manufacturer</string>
+    <string name="serial">Serial</string>
+    <string name="user">User</string>
+    <string name="host">Host</string>
 </resources>

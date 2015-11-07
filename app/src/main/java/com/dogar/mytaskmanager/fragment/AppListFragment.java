@@ -2,15 +2,18 @@ package com.dogar.mytaskmanager.fragment;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.graphics.Palette;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.akexorcist.roundcornerprogressbar.IconRoundCornerProgressBar;
 import com.bumptech.glide.Glide;
@@ -18,6 +21,7 @@ import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.dogar.mytaskmanager.Constants;
 import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.adapters.TasksAdapter;
 import com.dogar.mytaskmanager.di.component.DaggerAppListComponent;
 import com.dogar.mytaskmanager.di.module.ListAppModule;
@@ -25,12 +29,14 @@ import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.mvp.AppListPresenter;
 import com.dogar.mytaskmanager.mvp.impl.AppsListPresenterImpl;
-import com.dogar.mytaskmanager.utils.ToastUtils;
+import com.dogar.mytaskmanager.utils.MemoryUtil;
+import com.google.android.gms.analytics.HitBuilders;
 import com.kogitune.activity_transition.fragment.FragmentTransitionLauncher;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import org.parceler.Parcels;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -47,12 +53,21 @@ import timber.log.Timber;
 
 public class AppListFragment extends BaseFragment implements AppListPresenter.View, SlidingUpPanelLayout.PanelSlideListener, IconRoundCornerProgressBar.OnIconClickListener {
 
+	public static final int LOW_MEMORY_USAGE_PERCENT  = 35;
+	public static final int HIGH_MEMORY_USAGE_PERCENT = 80;
+
 	private static final int REFRESH_ANIM_DELAY_MILLIS = 2000;
 	@Bind(R.id.process_list)       RecyclerView               processList;
 	@Bind(R.id.refresh_layout)     MaterialRefreshLayout      refreshLayout;
 	@Bind(R.id.sliding_layout)     SlidingUpPanelLayout       slidingUpPanelLayout;
 	@Bind(R.id.progressExpandIcon) ImageView                  progressExpandIcon;
 	@Bind(R.id.ramProgress)        IconRoundCornerProgressBar ramProgress;
+	@Bind(R.id.ram_text_info)      TextView                   ramTextInfo;
+
+	@BindColor(R.color.red)          int colorRed;
+	@BindColor(R.color.green)        int colorGreen;
+	@BindColor(R.color.orange)       int colorOrange;
+	@BindColor(R.color.md_green_500) int toolbarDefaultColor;
 
 	@Inject TasksAdapter            myTasksAdapter;
 	@Inject AppsListPresenterImpl   appsListPresenter;
@@ -60,9 +75,9 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	@Inject FadeInAnimator          fadeInAnimator;
 	@Inject Intent                  calculateRamIntent;
 
-	@BindColor(R.color.md_green_500) int colorGreen;
 
 	private boolean isRefreshing;
+	private boolean isKillingInProgress;
 	private List<AppInfo> appInfos = new ArrayList<>();
 
 	public static Fragment newInstance() {
@@ -102,7 +117,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-		getToolbar().setBackgroundColor(colorGreen);
+		getToolbar().setBackgroundColor(toolbarDefaultColor);
 		refreshLayout.setMaterialRefreshListener(new RefresherListener());
 		processList.setLayoutManager(new LinearLayoutManager(mActivity));
 		processList.setItemAnimator(fadeInAnimator);
@@ -111,6 +126,22 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		slidingUpPanelLayout.setTouchEnabled(false);
 		ramProgress.setOnIconClickListener(this);
 		setNavigationModeOff();
+		setBackListener();
+	}
+
+	private void setBackListener() {
+		getView().setFocusableInTouchMode(true);
+		getView().requestFocus();
+		getView().setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode == KeyEvent.KEYCODE_BACK) {
+					mActivity.finish();
+					return true;
+				}
+				return false;
+			}
+		});
 	}
 
 
@@ -152,6 +183,15 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		}.start();
 	}
 
+	@Override
+	public void onAppKilled(String packageName) {
+		AppInfo killedApp = new AppInfo();
+		killedApp.setPackageName(packageName);
+		int killedAppIndex = appInfos.indexOf(killedApp);
+		appInfos.remove(killedAppIndex);
+		scaleInAnimationAdapter.notifyItemRemoved(killedAppIndex);
+	}
+
 
 	@Override
 	public void onAppListLoaded(List<AppInfo> runningApps) {
@@ -168,9 +208,17 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	}
 
 	@Override
-	public void onNewRamInfo(long memoryUsed) {
-		Timber.i("Get ram info -" + memoryUsed + "%");
-		ramProgress.setProgress(memoryUsed);
+	public void onNewRamInfo(long memoryUsedPercent,long memoryUsed) {
+		Timber.i("Get ram info - %d percent", memoryUsedPercent);
+		if (memoryUsedPercent < LOW_MEMORY_USAGE_PERCENT) {
+			ramProgress.setProgressColor(colorGreen);
+		} else if (memoryUsedPercent > HIGH_MEMORY_USAGE_PERCENT) {
+			ramProgress.setProgressColor(colorRed);
+		} else {
+			ramProgress.setProgressColor(colorOrange);
+		}
+		ramProgress.setProgress(memoryUsedPercent);
+		ramTextInfo.setText(MessageFormat.format("{0} MB used of {1} MB",memoryUsed, MemoryUtil.getTotalRAMinMb()));
 	}
 
 	@Override
@@ -201,7 +249,27 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 	 */
 	@Override
 	public void onIconClick() {
-		ToastUtils.show(getActivity(), "bla");
+		TaskManagerApp.getTracker().send(new HitBuilders.EventBuilder()
+				.setCategory("Action")
+				.setAction("Trim memory")
+				.build());
+		if (!isKillingInProgress) {
+			new AsyncTask<Void, Void, Void>() {
+
+				@Override
+				protected Void doInBackground(Void... params) {
+					isKillingInProgress = true;
+					appsListPresenter.killApps();
+					return null;
+				}
+
+				@Override
+				protected void onPostExecute(Void aVoid) {
+					refreshLayout.autoRefresh();
+					isKillingInProgress = false;
+				}
+			}.execute();
+		}
 	}
 
 	@OnClick(R.id.progressExpandIcon)

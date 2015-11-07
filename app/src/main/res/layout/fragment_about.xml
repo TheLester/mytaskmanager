@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<android.support.v7.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/size_normal"
+    app:cardBackgroundColor="@android:color/white"
+    app:cardCornerRadius="2dp"
+    app:cardElevation="@dimen/size_normal"
+    app:contentPadding="@dimen/size_normal">
 
-    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:layout_gravity="center"
-              android:text="Some about text"/>
-</FrameLayout>
+    <TextView
+        android:id="@+id/about_text_info"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="@dimen/text_size_big"/>
+</android.support.v7.widget.CardView>

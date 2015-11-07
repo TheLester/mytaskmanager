@@ -46,12 +46,11 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		this.mView = mView;
 		TaskManagerApp.getInstance().component().inject(this);
 		initInstalledApps();
-
 	}
 
 	@Override
 	public void onResume() {
-		EventBus.getDefault().register(this);
+		EventBus.getDefault().registerSticky(this);
 	}
 
 	@Override
@@ -63,9 +62,23 @@ public class AppsListPresenterImpl implements AppListPresenter {
 		mView.onLoadAppMoreInfo(event.appInfo, event.imageView);
 	}
 	public void onEventMainThread(EventHolder.RamUpdateEvent event) {
-		mView.onNewRamInfo(event.memoryUsed);
+		mView.onNewRamInfo(event.memoryUsedPercent,event.memoryUsed);
 	}
-
+	public void onEventMainThread(EventHolder.SelectAllAppsEvent event) {
+		for(AppInfo appInfo:appInfos){
+			appInfo.setChecked(true);
+		}
+		mView.onAppListLoaded(appInfos);
+	}
+	public void onEventMainThread(EventHolder.DeselectAllAppsEvent event) {
+		for(AppInfo appInfo:appInfos){
+			appInfo.setChecked(false);
+		}
+		mView.onAppListLoaded(appInfos);
+	}
+	public void onEventMainThread(EventHolder.AppKilledEvent event) {
+		mView.onAppKilled(event.packageName);
+	}
 	@Override
 	public void loadAppList() {
 		loadAppsInfos();
@@ -75,6 +88,15 @@ public class AppsListPresenterImpl implements AppListPresenter {
 	public void reloadAppList() {
 		appInfos.clear();
 		loadAppsInfos();
+	}
+
+	@Override
+	public void killApps() {
+		for(AppInfo appInfo : appInfos){
+			if(appInfo.isChecked() && !appInfo.isCurrentApp()){
+				activityManager.killBackgroundProcesses(appInfo.getPackageName());
+			}
+		}
 	}
 
 	private void loadAppsInfos() {

@@ -3,6 +3,7 @@ package com.dogar.mytaskmanager.utils;
 import android.content.Context;
 import android.content.res.Resources;
 
+import com.dogar.mytaskmanager.Constants;
 import com.dogar.mytaskmanager.R;
 
 import java.io.IOException;
@@ -43,7 +44,7 @@ public class MemoryUtil {
 				value = m.group(1);
 			}
 			reader.close();
-			Timber.i("String val "+value);
+			Timber.i("String val " + value);
 			totRam = Long.parseLong(value);
 
 		} catch (IOException ex) {
@@ -57,5 +58,9 @@ public class MemoryUtil {
 		}
 
 		return totRam;
+	}
+
+	public static long getTotalRAMinMb() {
+		return getTotalRAMinKb() / Constants.KILOBYTE;
 	}
 }

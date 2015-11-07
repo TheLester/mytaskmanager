@@ -1,6 +1,7 @@
 package com.dogar.mytaskmanager.fragment;
 
 import android.animation.ObjectAnimator;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.model.AppInfo;
 import com.dogar.mytaskmanager.utils.CommonUtils;
 import com.dogar.mytaskmanager.utils.MemoryUtil;
+import com.dogar.mytaskmanager.utils.ToastUtils;
 import com.github.clans.fab.FloatingActionMenu;
 import com.kogitune.activity_transition.fragment.ExitFragmentTransition;
 import com.kogitune.activity_transition.fragment.FragmentTransition;
@@ -37,8 +39,8 @@ import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTransition.ExitListener {
-	public static final String APP_INFO_OBJ  = "app_info";
-	private static final int    ANIM_DURATION = 1000;
+	public static final  String APP_INFO_OBJ    = "app_info";
+	private static final int    ANIM_DURATION   = 1000;
 	private static final String SETTINGS_INTENT = "android.settings.APPLICATION_DETAILS_SETTINGS";
 
 	@Bind(R.id.imgAppIconInfo)
@@ -59,8 +61,8 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 	CardView           detailCard;
 	@Bind(R.id.fabMoreInfo)
 	FloatingActionMenu menu;
-	@Inject
-	Context            context;
+	@Inject Context         context;
+	@Inject ActivityManager activityManager;
 
 	private AppInfo currentAppInfo;
 	private int     screenHeight;
@@ -79,18 +81,12 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 	public void onCreate(@Nullable Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		currentAppInfo = Parcels.unwrap(getArguments().getParcelable(APP_INFO_OBJ));
-		EventBus.getDefault().registerSticky(this);
-	}
-
-	@Override
-	public void onDestroy() {
-		EventBus.getDefault().unregister(this);
-		super.onDestroy();
+		TaskManagerApp.getInstance().component().inject(this);
 	}
 
 	@Override
 	public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-		TaskManagerApp.getInstance().component().inject(this);
+		EventBus.getDefault().registerSticky(this);
 		final ExitFragmentTransition exitFragmentTransition = FragmentTransition.with(this).to(appIcon).start(savedInstanceState);
 		exitFragmentTransition.setExitListener(this);
 		exitFragmentTransition.startExitListening();
@@ -99,6 +95,12 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		showMenuButton();
 		animateInInfoPanel();
 		setNavigationModeOn(currentAppInfo.getTaskName());
+	}
+
+	@Override
+	public void onDestroyView() {
+		EventBus.getDefault().unregister(this);
+		super.onDestroyView();
 	}
 
 	private void showMenuButton() {
@@ -124,11 +126,13 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 		menu.setMenuButtonColorPressed(event.darkColor);
 		getToolbar().setBackgroundColor(event.color);
 	}
-	public void onEvent(EventHolder.BackPressedEvent event){
+
+	public void onEvent(EventHolder.BackPressedEvent event) {
 		FragmentActivity activity = getActivity();
 		activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_BACK));
 		activity.dispatchKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_BACK));
 	}
+
 	@OnClick(R.id.btnShowInAndroidDetails)
 	protected void showInAndroidDetails() {
 		Intent appInfoIntent = new Intent();
@@ -139,7 +143,14 @@ public class MoreAppInfoFragment extends BaseFragment implements ExitFragmentTra
 
 	@OnClick(R.id.btnKillCurrentApp)
 	protected void killCurrentApp() {
-		//TODO impl
+		if(currentAppInfo.isCurrentApp()){
+			ToastUtils.show(mActivity, R.string.cant_kill_this);
+		}else{
+			activityManager.killBackgroundProcesses(currentAppInfo.getPackageName());
+			ToastUtils.show(mActivity, currentAppInfo.getTaskName() + " killed");
+			EventBus.getDefault().postSticky(new EventHolder.AppKilledEvent(currentAppInfo.getPackageName()));
+			goBack();
+		}
 	}
 
 	private void fillViews() {

@@ -5,13 +5,17 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.TextView;
 
 import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.TaskManagerApp;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
+import com.google.android.gms.analytics.HitBuilders;
+import com.google.android.gms.analytics.Tracker;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -22,13 +26,16 @@ public abstract  class BaseActivity extends AppCompatActivity {
 	@Bind(R.id.toolbar)      Toolbar  toolbar;
 	@Bind(R.id.toolbarTitle) TextView titleTv;
 	private FragmentManager mFm = getSupportFragmentManager();
-
+	private Tracker mTracker;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_base);
 		ButterKnife.bind(this);
 		setupToolbar();
+		TaskManagerApp application = (TaskManagerApp) getApplication();
+		mTracker = application.getTracker();
+
 	}
 	public  abstract void setShowMenu(boolean showMenu);
 	@Override
@@ -47,7 +54,9 @@ public abstract  class BaseActivity extends AppCompatActivity {
 	public void goToTop() {
 		mFm.popBackStack(mFm.getBackStackEntryAt(0).getId(), FragmentManager.POP_BACK_STACK_INCLUSIVE);
 	}
-
+	public void popFragment(){
+		mFm.popBackStack();
+	}
 	public void changeFragment(Fragment f, boolean addToBackStack, boolean animate, AnimationDirection direction) {
 		if (f == null) {
 			return;
@@ -90,19 +99,22 @@ public abstract  class BaseActivity extends AppCompatActivity {
 
 		// Commit transaction
 		ft.commit();
+		mTracker.setScreenName("Image~" + f.getClass().getCanonicalName());
+		mTracker.send(new HitBuilders.ScreenViewBuilder().build());
 	}
 
 	protected void setupToolbar() {
 		setSupportActionBar(toolbar);
-		getSupportActionBar().setHomeAsUpIndicator(R.drawable.arrow_back);
+		ActionBar supportActionBar = getSupportActionBar();
+		supportActionBar.setHomeAsUpIndicator(R.drawable.arrow_back);
 		toolbar.setNavigationOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				EventBus.getDefault().post(new EventHolder.BackPressedEvent());
 			}
 		});
-		getSupportActionBar().setHomeButtonEnabled(false);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+		supportActionBar.setHomeButtonEnabled(false);
+		supportActionBar.setDisplayShowTitleEnabled(false);
 	}
 
 	protected enum AnimationDirection {

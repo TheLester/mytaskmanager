@@ -11,7 +11,6 @@ import dagger.Provides;
 
 @Module
 public class AppModule {
-
 	@Provides
 	public ActivityManager provideActivityManager(Context context) {
 		return (ActivityManager) context.getSystemService(context.ACTIVITY_SERVICE);

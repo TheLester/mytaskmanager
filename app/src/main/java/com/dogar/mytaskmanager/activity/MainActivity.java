@@ -1,13 +1,17 @@
 package com.dogar.mytaskmanager.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.dogar.mytaskmanager.R;
+import com.dogar.mytaskmanager.eventbus.EventHolder;
 import com.dogar.mytaskmanager.fragment.AboutFragment;
 import com.dogar.mytaskmanager.fragment.AppListFragment;
-import com.dogar.mytaskmanager.fragment.SettingsFragment;
+import com.dogar.mytaskmanager.fragment.SystemInfoFragment;
+
+import de.greenrobot.event.EventBus;
 
 public class MainActivity extends BaseActivity {
 	private boolean showMenu = true;
@@ -41,11 +45,16 @@ public class MainActivity extends BaseActivity {
 		int id = item.getItemId();
 		switch (id) {
 			case R.id.selectAll:
+				EventBus.getDefault().post(new EventHolder.SelectAllAppsEvent());
 				return true;
 			case R.id.deselectAll:
+				EventBus.getDefault().post(new EventHolder.DeselectAllAppsEvent());
+				return true;
+			case R.id.systemInfo:
+				changeFragment(SystemInfoFragment.newInstance(), true, true, AnimationDirection.FROM_TOP_TO_BOTTOM);
 				return true;
 			case R.id.settings:
-				changeFragment(SettingsFragment.newInstance(), true, true, AnimationDirection.FROM_BOTTOM_TO_TOP);
+				startActivity(new Intent(this, SettingsActivity.class));
 				return true;
 			case R.id.about:
 				changeFragment(AboutFragment.newInstance(), true, true, AnimationDirection.FROM_BOTTOM_TO_TOP);
