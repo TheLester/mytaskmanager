@@ -127,6 +127,7 @@ public class AppListFragment extends BaseFragment implements AppListPresenter.Vi
 		ramProgress.setOnIconClickListener(this);
 		setNavigationModeOff();
 		setBackListener();
+		ramProgress.setSaveEnabled(false);
 	}
 
 	private void setBackListener() {
