@@ -11,7 +11,7 @@ Try out the application on the Play Store.
 [![Get it on Google Play][google_play_store_badge]][google_play_store_link]
 
 # Basic used libraries:
- * [RecyclerView animatores](https://github.com/wasabeef/recyclerview-animators)
+ * [RecyclerView animators](https://github.com/wasabeef/recyclerview-animators)
  * [Dagger2](https://github.com/google/dagger)
  * [RxAndroid](https://github.com/ReactiveX/RxAndroid)
  * [Material](https://github.com/rey5137/material)
@@ -20,7 +20,7 @@ Try out the application on the Play Store.
  * [AndroidSlidingUpPanel](https://github.com/umano/AndroidSlidingUpPanel)
  * [RoundCornerProgressBar](https://github.com/akexorcist/Android-RoundCornerProgressBar)
  
- Other libs dependencies could be find in [build.gradle](https://github.com/TheLester/mytaskmanager/blob/master/app/build.gradle)
+ Other libs dependencies can be find in [build.gradle](https://github.com/TheLester/mytaskmanager/blob/master/app/build.gradle)
 
 
 License
