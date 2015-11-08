@@ -2,7 +2,7 @@ My Task Manager
 ====
 ![icon][app_icon]
 
-Open source application for managing running apps.Works on Android 4.0 and above (Also supports Android M).
+Task Manager is  an open sourced application for managing running apps.Works on Android 4.0 and above (Also supports Android M).
 
 ![About TaskManager][app_gif]
 
