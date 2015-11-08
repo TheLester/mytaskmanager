@@ -26,7 +26,9 @@
         >
 
         <activity
-            android:name="com.dogar.mytaskmanager.activity.MainActivity">
+            android:name=".activity.MainActivity"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
@@ -34,19 +36,20 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.dogar.mytaskmanager.activity.SettingsActivity"
+            android:name=".activity.SettingsActivity"
             android:label="@string/action_settings"
-            android:parentActivityName="com.dogar.mytaskmanager.activity.MainActivity">
+            android:screenOrientation="portrait"
+            android:parentActivityName=".activity.MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.dogar.mytaskmanager.activity.MainActivity"/>
+                android:value=".activity.MainActivity"/>
         </activity>
 
         <meta-data
             android:name="io.fabric.ApiKey"
             android:value="13d9f70d944de486d25723af4b398737782052f2"/>
 
-        <service android:name="com.dogar.mytaskmanager.service.CalculateRamService"/>
+        <service android:name=".service.CalculateRamService"/>
     </application>
     <!-- Optionally, register AnalyticsReceiver and AnalyticsService to support background
      dispatching on non-Google Play devices -->

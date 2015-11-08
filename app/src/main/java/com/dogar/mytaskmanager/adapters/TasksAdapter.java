@@ -26,36 +26,36 @@ import timber.log.Timber;
 
 public class TasksAdapter extends RecyclerView.Adapter<TasksAdapter.TaskVH> {
 
-    private Context       context;
-    private List<AppInfo> tasks;
+	private Context       context;
+	private List<AppInfo> tasks;
 
-    public TasksAdapter(Context context, List<AppInfo> tasks) {
-        this.context = context;
-        this.tasks = tasks;
-    }
+	public TasksAdapter(Context context, List<AppInfo> tasks) {
+		this.context = context;
+		this.tasks = tasks;
+	}
 
-    @Override
-    public TaskVH onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_app_card, parent, false);
+	@Override
+	public TaskVH onCreateViewHolder(ViewGroup parent, int viewType) {
+		View v = LayoutInflater.from(parent.getContext())
+				.inflate(R.layout.item_app_card, parent, false);
 
-        TaskVH vh = new TaskVH(v);
-        return vh;
-    }
+		TaskVH vh = new TaskVH(v);
+		return vh;
+	}
 
-    @Override
-    public void onBindViewHolder(TaskVH holder, int position) {
-        AppInfo appInfo = tasks.get(position);
-        holder.appInfo.setText(appInfo.getTaskName());
-        holder.appMemoryInfo.setText(MemoryUtil.formatMemSize(context, appInfo.getMemoryInKb()));
-        holder.cbAppChecked.setCheckedImmediately(appInfo.isChecked());
+	@Override
+	public void onBindViewHolder(TaskVH holder, int position) {
+		AppInfo appInfo = tasks.get(position);
+		holder.appInfo.setText(appInfo.getTaskName());
+		holder.appMemoryInfo.setText(MemoryUtil.formatMemSize(context, appInfo.getMemoryInKb()));
+		holder.cbAppChecked.setCheckedImmediately(appInfo.isChecked());
 
-        Glide.with(context)
-                .load(appInfo.getIcon())
-                .centerCrop()
-                .crossFade()
-                .into(holder.appIcon);
-		if(appInfo.isCurrentApp()){
+		Glide.with(context)
+				.load(appInfo.getIcon())
+				.centerCrop()
+				.crossFade()
+				.into(holder.appIcon);
+		if (appInfo.isCurrentApp()) {
 			holder.cbAppChecked.setVisibility(View.GONE);
 		}else{
 			holder.cbAppChecked.setVisibility(View.VISIBLE);

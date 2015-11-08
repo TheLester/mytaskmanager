@@ -24,7 +24,7 @@ public class ListAppModule {
 	private List<AppInfo>         appInfoList;
 
 
-	public ListAppModule(AppListPresenter.View appListView, Context context,List<AppInfo> appInfoList) {
+	public ListAppModule(AppListPresenter.View appListView, Context context, List<AppInfo> appInfoList) {
 		this.appListView = appListView;
 		this.context = context;
 		this.appInfoList = appInfoList;
@@ -32,7 +32,7 @@ public class ListAppModule {
 
 	@Provides
 	public TasksAdapter provideTasksAdapter() {
-		TasksAdapter mainAdapter = new TasksAdapter(context,appInfoList);
+		TasksAdapter mainAdapter = new TasksAdapter(context, appInfoList);
 		return mainAdapter;
 	}
 

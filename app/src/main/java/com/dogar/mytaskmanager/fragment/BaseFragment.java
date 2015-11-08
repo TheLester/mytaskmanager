@@ -29,9 +29,11 @@ public abstract class BaseFragment extends Fragment {
 		super.onAttach(activity);
 		mActivity = (BaseActivity) activity;
 	}
-	public void goBack(){
-		((BaseActivity)getActivity()).popFragment();
+
+	public void goBack() {
+		((BaseActivity) getActivity()).popFragment();
 	}
+
 	@Nullable
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

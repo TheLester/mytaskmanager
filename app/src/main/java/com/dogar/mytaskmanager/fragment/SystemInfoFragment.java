@@ -7,23 +7,11 @@ import android.widget.TextView;
 
 import com.dogar.mytaskmanager.R;
 import com.dogar.mytaskmanager.eventbus.EventHolder;
+import com.dogar.mytaskmanager.Constants;
 
 import butterknife.Bind;
 import butterknife.BindString;
 import de.greenrobot.event.EventBus;
-
-import static com.dogar.mytaskmanager.Constants.BRAND;
-import static com.dogar.mytaskmanager.Constants.DEVICE;
-import static com.dogar.mytaskmanager.Constants.DISPLAY;
-import static com.dogar.mytaskmanager.Constants.HARDWARE;
-import static com.dogar.mytaskmanager.Constants.HOST;
-import static com.dogar.mytaskmanager.Constants.MANUFACTURER;
-import static com.dogar.mytaskmanager.Constants.MODEL;
-import static com.dogar.mytaskmanager.Constants.OSVERSION;
-import static com.dogar.mytaskmanager.Constants.PRODUCT;
-import static com.dogar.mytaskmanager.Constants.RELEASE;
-import static com.dogar.mytaskmanager.Constants.SERIAL;
-import static com.dogar.mytaskmanager.Constants.USER;
 
 public class SystemInfoFragment extends BaseFragment {
 	//todo data binding
@@ -71,17 +59,17 @@ public class SystemInfoFragment extends BaseFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		setNavigationModeOn(systemInfo);
-		osVersion.setText(OSVERSION);
-		release.setText(RELEASE);
-		device.setText(DEVICE);
-		model.setText(MODEL);
-		product.setText(PRODUCT);
-		brand.setText(BRAND);
-		display.setText(DISPLAY);
-		hardware.setText(HARDWARE);
-		manufacturer.setText(MANUFACTURER);
-		serial.setText(SERIAL);
-		user.setText(USER);
-		host.setText(HOST);
+		osVersion.setText(Constants.OSVERSION);
+		release.setText(Constants.RELEASE);
+		device.setText(Constants.DEVICE);
+		model.setText(Constants.MODEL);
+		product.setText(Constants.PRODUCT);
+		brand.setText(Constants.BRAND);
+		display.setText(Constants.DISPLAY);
+		hardware.setText(Constants.HARDWARE);
+		manufacturer.setText(Constants.MANUFACTURER);
+		serial.setText(Constants.SERIAL);
+		user.setText(Constants.USER);
+		host.setText(Constants.HOST);
 	}
 }
