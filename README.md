@@ -1,4 +1,4 @@
-My Task Manager
+My Task Manager [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-My%20Task%20Manager-brightgreen.svg?style=social)](http://android-arsenal.com/details/3/2754)
 ====
 ![icon][app_icon]
 
